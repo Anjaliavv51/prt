@@ -9,7 +9,7 @@ import { IoCopyOutline } from "react-icons/io5";
 import { cn } from "@/lib/utils";
 
 import { BackgroundGradientAnimation } from "./Gradientbg";
-import { GlobeDemo } from "@/components/ui/GridGlobe";
+// //import { GlobeDemo } from "@/components/ui/GridGlobe";
 //import { GridGlobe } from "@/components/ui/GridGlobe";
 import MagicButton from "@/components/MagicButton";
 import { SparklesCore } from "@/components/ui/Sparkles";
@@ -132,7 +132,7 @@ export const BentoGridItem = ({
               {title}
             </div>
 
-            {id === 2 && <GlobeDemo />}
+            {/* //id === 2 && <GlobeDemo />*/}
             {/*{id === 2 && <GridGlobe />}*/}
             
             {id === 3 && (
