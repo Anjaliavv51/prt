@@ -5,6 +5,7 @@ import { navItems } from "@/data";
 //import CanvasCursor from "@/components/cursor";
 import RecentProjects from "@/components/RecentProjects";
 import Experience from "@/components/Experience";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
         <BentoGrid/>
         <RecentProjects/>
         <Experience/>
+        <Footer/>
       </div>
     </main>
   );
