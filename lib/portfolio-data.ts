@@ -53,6 +53,20 @@ export interface GridItem {
   spareImg: string;
 }
 
+export interface CertificateItem {
+  id: number;
+  title: string;
+  subtitle?: string;
+  category: "Research Conference" | "Open Source" | "Achievement" | "Other" | string;
+  issuer: string;
+  issueDate: string;
+  credentialId?: string;
+  image: string;
+  pdfUrl?: string;
+  additionalImages?: string[];
+  description?: string;
+}
+
 export interface PortfolioContent {
   profile: ProfileData;
   navItems: NavItem[];
@@ -60,6 +74,7 @@ export interface PortfolioContent {
   workExperience: ExperienceItem[];
   socialMedia: SocialMediaItem[];
   gridItems: GridItem[];
+  certificates: CertificateItem[];
   updatedAt: string;
 }
 
@@ -243,6 +258,47 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
       href: "https://discordapp.com/users/1179655863926013972",
     },
   ],
+  certificates: [
+    {
+      id: 1,
+      title: "A Comprehensive Analysis of Heart Disease Prediction Using Machine Learning Approaches",
+      subtitle: "Certificate of Presentation - 4th International Conference on Advanced Communications and Machine Intelligence (MICA 2025)",
+      category: "Research Conference",
+      issuer: "THE ICFAI UNIVERSITY TRIPURA & Springer",
+      issueDate: "December 22-24, 2025",
+      image: "/certificates/mica-2025-springer.png",
+      pdfUrl: "/certificates/mica-2025-springer.pdf",
+      description: "Presented research paper titled 'A Comprehensive Analysis of Heart Disease Prediction Using Machine Learning Approaches' at MICA 2025 organized by ICFAI University Tripura in collaboration with Springer.",
+    },
+    {
+      id: 2,
+      title: "DCFG-Net: A Dynamic Cross-Frequency Graph Network for Interpretable EEG Motor Imagery Classification",
+      subtitle: "Certificate for Oral Presentation - International Conference on Advanced Design, Materials and Biomedical Engineering (ICDMB 2026)",
+      category: "Research Conference",
+      issuer: "ANRF & Maulana Azad National Institute of Technology (MANIT), Bhopal",
+      issueDate: "October 08-09, 2026",
+      credentialId: "Paper ID: 150",
+      image: "/certificates/icdmb-2026-manit.png",
+      pdfUrl: "/certificates/icdmb-2026-manit.pdf",
+      description: "Successfully presented research paper for Oral Presentation at ICDMB 2026 held at MANIT Bhopal, sponsored by ANRF.",
+    },
+    {
+      id: 3,
+      title: "GirlScript Summer of Code 2024 - Top Contributor & Top Performer",
+      subtitle: "Certificate of Appreciation & GSSoC'24 Top Performer Achievements",
+      category: "Open Source",
+      issuer: "GirlScript Foundation",
+      issueDate: "August 2024",
+      credentialId: "GSSoC2024_OST100C_6A152B3C",
+      image: "/certificates/gssoc-2024-open-source-p1.png",
+      additionalImages: [
+        "/certificates/gssoc-2024-open-source-p2.png",
+        "/certificates/gssoc-2024-open-source-p3.png",
+      ],
+      pdfUrl: "/certificates/gssoc-2024-open-source.pdf",
+      description: "Designated as Top Performer / Top Contributor at GirlScript Summer of Code 2024 with 93 Pull Requests merged, Rank 18, and 8 achievement badges across multiple open-source repositories.",
+    },
+  ],
   updatedAt: new Date().toISOString(),
 };
 
@@ -259,6 +315,7 @@ export function getPortfolioContent(): PortfolioContent {
         ...DEFAULT_PORTFOLIO_CONTENT,
         ...parsed,
         profile: { ...DEFAULT_PORTFOLIO_CONTENT.profile, ...(parsed.profile || {}) },
+        certificates: parsed.certificates || DEFAULT_PORTFOLIO_CONTENT.certificates,
       };
     }
   } catch (err) {
@@ -312,6 +369,7 @@ export function savePortfolioContent(newContent: Partial<PortfolioContent>): { s
     try {
       revalidatePath("/");
       revalidatePath("/admin");
+      revalidatePath("/certificates");
     } catch {
       // ignore outside request context
     }

@@ -3,7 +3,7 @@ import React from 'react'
 import { Spotlight } from './ui/Spotlight'
 import { TextGenerateEffect } from './ui/TextGenerateEffect'
 import MagicButton from './MagicButton'
-import { FaLocationArrow } from 'react-icons/fa'
+import { FaLocationArrow, FaAward } from 'react-icons/fa6'
 import { BackgroundLines } from './ui/background-lines'
 import { ProfileData } from '@/lib/portfolio-data'
 
@@ -57,11 +57,23 @@ const Hero = ({ data }: HeroProps) => {
             mb-4 text-sm md:text-lg lg:text-2xl'>
             {bio}
             </p>
-            <a href="#about">
-              <MagicButton title={ctaText} 
-              icon={<FaLocationArrow/>} 
-              position={'right'}/>
-            </a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-2">
+              <a href="#about">
+                <MagicButton 
+                  title={ctaText} 
+                  icon={<FaLocationArrow/>} 
+                  position={'right'}
+                />
+              </a>
+              <a href="/certificates">
+                <MagicButton 
+                  title="View Certificates" 
+                  icon={<FaAward className="text-yellow-400 text-lg" />} 
+                  position={'left'}
+                  otherClasses="!bg-[#0c0f24] hover:!bg-[#151c42] border border-purple/30"
+                />
+              </a>
+            </div>
             </BackgroundLines>
         </div>
     </div>

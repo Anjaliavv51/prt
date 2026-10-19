@@ -2,7 +2,7 @@ export const navItems = [
     { name: "About", link: "#about" },
     { name: "Resume", link: "https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing" },
     { name: "Projects", link: "#projects" },
-    //{ name: "Testimonials", link: "#testimonials" },
+    { name: "Certificates", link: "/certificates" },
     { name: "Blogs", link: "https://medium.com/@plpanjali05"},
     { name: "Contact", link: "#contact" },
   ];
