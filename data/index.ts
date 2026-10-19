@@ -1,6 +1,6 @@
 export const navItems = [
     { name: "About", link: "#about" },
-    { name: "Resume", link: "https://drive.google.com/file/d/1r_DvJA3vQp9-9fA80LUJZAWosK7GVWm-/view?usp=sharing" },
+    { name: "Resume", link: "https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing" },
     { name: "Projects", link: "#projects" },
     //{ name: "Testimonials", link: "#testimonials" },
     { name: "Blogs", link: "https://medium.com/@plpanjali05"},
@@ -74,35 +74,43 @@ export const navItems = [
   export const projects = [
     {
       id: 1,
-      title: "3D Solar System Planets to Explore",
-      des: "Explore the wonders of our solar system with this captivating 3D simulation of the planets using Three.js.",
+      title: "Retro",
+      des: "A popular open-source vintage-themed web application and collaborative platform recognized across major open-source programs.",
       img: "/p1.svg",
       iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/fm.svg"],
-      link: "https://github.com/adrianhajdin?tab=repositories",
+      link: "https://github.com/Anjaliavv51/Retro",
     },
     {
       id: 2,
-      title: "Yoom - Video Conferencing App",
-      des: "Simplify your video conferencing experience with Yoom. Seamlessly connect with colleagues and friends.",
+      title: "Touch-No-Fire-Game",
+      des: "An interactive web-based mini-game where players navigate obstacles and score points while avoiding multiplying fire hazards.",
       img: "/p2.svg",
-      iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/stream.svg", "/c.svg"],
-      link: "https://github.com/adrianhajdin/zoom-clone",
+      iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg"],
+      link: "https://github.com/Anjaliavv51/Touch-No-Fire-Game",
     },
     {
       id: 3,
-      title: "AI Image SaaS - Canva Application",
-      des: "A REAL Software-as-a-Service app with AI features and a payments and credits system using the latest tech stack.",
+      title: "apex-data-processor",
+      des: "High-performance concurrent data processing service built with Java and Spring Boot with custom thread-safe LRU caching and timeline indexing.",
       img: "/p3.svg",
-      iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/c.svg"],
-      link: "https://github.com/adrianhajdin/ai_saas_app",
+      iconLists: ["/dock.svg", "/cloud.svg", "/host.svg", "/c.svg"],
+      link: "https://github.com/Anjaliavv51/apex-data-processor",
     },
     {
       id: 4,
-      title: "Animated Apple Iphone 3D Website",
-      des: "Recreated the Apple iPhone 15 Pro website, combining GSAP animations and Three.js 3D effects..",
+      title: "TuneCrate",
+      des: "A modern music and media exploration application for streaming audio, curating playlists, and discovering creative soundscapes.",
       img: "/p4.svg",
-      iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
-      link: "https://github.com/adrianhajdin/iphone",
+      iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/stream.svg"],
+      link: "https://github.com/Anjaliavv51/TuneCrate",
+    },
+    {
+      id: 5,
+      title: "MailScribe",
+      des: "An intelligent email composition and newsletter tool designed for automated subscriber communications and structured messaging.",
+      img: "/p1.svg",
+      iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/fm.svg"],
+      link: "https://github.com/Anjaliavv51/MailScribe",
     },
   ];
   
@@ -204,24 +212,28 @@ export const navItems = [
   ];
   
   export const socialMedia = [
-    {
-      id: 1,
-      img: "/git.svg",
-      href: "https://github.com/Anjaliavv51",
-    },
-    {
-      id: 2,
-      img: "/twit.svg",
-      href: "https://x.com/Pavananjal75042",
-    },
-    {
-      id: 3,
-      img: "/link.svg",
-      href: "www.linkedin.com/in/lakshmi-pavananjali-pamidi-766760296",
-    },
-    {
-        id: 4,
-      img: "/discord.svg",
-      href: "https://discordapp.com/users/1179655863926013972",
-    },
-  ];
+  {
+    id: 1,
+    name: "GitHub",
+    img: "/git.svg",
+    href: "https://github.com/Anjaliavv51",
+  },
+  {
+    id: 2,
+    name: "Twitter/X",
+    img: "/twit.svg",
+    href: "https://x.com/Pavananjal75042",
+  },
+  {
+    id: 3,
+    name: "LinkedIn",
+    img: "/link.svg",
+    href: "https://www.linkedin.com/in/lakshmi-pavananjali-pamidi-766760296",
+  },
+  {
+    id: 4,
+    name: "Discord",
+    img: "/discord.svg",
+    href: "https://discordapp.com/users/1179655863926013972",
+  },
+];

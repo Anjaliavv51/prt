@@ -5,8 +5,19 @@ import { TextGenerateEffect } from './ui/TextGenerateEffect'
 import MagicButton from './MagicButton'
 import { FaLocationArrow } from 'react-icons/fa'
 import { BackgroundLines } from './ui/background-lines'
+import { ProfileData } from '@/lib/portfolio-data'
 
-const Hero = () => {
+interface HeroProps {
+  data?: ProfileData;
+}
+
+const Hero = ({ data }: HeroProps) => {
+  const name = data?.name || 'PAMIDI LAKSHMI PAVANANJALI';
+  const headline = data?.headline || 'Transforming Concepts into Seamless User Experiences';
+  const bio = data?.bio || "Hi, I'm Pavananjali, a Web Developer, Open Source, AIML and Robotics Enthusiast.";
+  const dpImage = data?.dpImage || '/dp.jpg';
+  const ctaText = data?.ctaText || 'Show my work';
+
   return (
     <div className='pb-20 pt-36'>
         <div>
@@ -32,22 +43,22 @@ const Hero = () => {
         justify-center'> 
         <BackgroundLines className="flex items-center justify-center w-full flex-col px-4">
         <img
-            src="/dp.jpg"
+            src={dpImage}
             alt="profile-pic"
-            className="rounded-full w-80 h-80 border-2 border-white-100 mb-5"
+            className="rounded-full w-80 h-80 border-2 border-white-100 mb-5 object-cover"
           />
             <h1 className='uppercase tracking-widest
             text-xs text-center text-blue-100 max-w-80'>
-                PAMIDI LAKSHMI PAVANANJALI
+                {name}
             </h1>
             <TextGenerateEffect 
-            className='text-center text-[80px] md:text-5xl lg:text-6xl'words={'Transforming Concepts into Seamless User Experiences'} />
+            className='text-center text-[80px] md:text-5xl lg:text-6xl' words={headline} />
             <p className='text-center md:tracking-wider
             mb-4 text-sm md:text-lg lg:text-2xl'>
-            Hi , I&apos;m Pavananjali, a Web Developer, Open Source , AIML and Robotic&apos;s Enthusiast.
+            {bio}
             </p>
             <a href="#about">
-              <MagicButton title='Show my work' 
+              <MagicButton title={ctaText} 
               icon={<FaLocationArrow/>} 
               position={'right'}/>
             </a>

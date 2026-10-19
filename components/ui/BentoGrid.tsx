@@ -44,6 +44,7 @@ export const BentoGridItem = ({
   imgClassName,
   titleClassName,
   spareImg,
+  resumeLink,
 }: {
   className?: string;
   id: number;
@@ -53,6 +54,7 @@ export const BentoGridItem = ({
   imgClassName?: string;
   titleClassName?: string;
   spareImg?: string;
+  resumeLink?: string;
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -146,8 +148,9 @@ export const BentoGridItem = ({
                   particleColor="#FFFFFF"
                 />
                 <a
-                  href="https://drive.google.com/file/d/1r_DvJA3vQp9-9fA80LUJZAWosK7GVWm-/view?usp=sharing"
+                  href={resumeLink || "https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing"}
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <div className="z-10">
                     <LitupButton name="View Resume" />
