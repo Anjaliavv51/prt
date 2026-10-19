@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { FaLocationArrow } from "react-icons/fa6";
+import { FaLocationArrow, FaInstagram } from "react-icons/fa6";
 import { socialMedia as defaultSocialMedia } from "@/data";
 import MagicButton from "./MagicButton";
 import { SocialMediaItem } from "@/lib/portfolio-data";
@@ -35,13 +35,27 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
           Reach out to me today and let&apos;s discuss how I can help you
           achieve your goals.
         </p>
-        <a href={`mailto:${displayEmail}`}>
-          <MagicButton
-            title="Let's get in touch"
-            icon={<FaLocationArrow />}
-            position="right"
-          />
-        </a>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href={`mailto:${displayEmail}`}>
+            <MagicButton
+              title="Let's get in touch"
+              icon={<FaLocationArrow />}
+              position="right"
+            />
+          </a>
+          <a
+            href="https://www.instagram.com/nameits.any"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MagicButton
+              title="DM on Instagram"
+              icon={<FaInstagram className="text-pink-400 text-lg" />}
+              position="left"
+              otherClasses="!bg-[#150a24] hover:!bg-[#220d3a] border border-pink-500/30 text-white"
+            />
+          </a>
+        </div>
       </div>
       <div className="flex mt-16 md:flex-row flex-col justify-between items-center gap-4">
         <div className="flex items-center gap-2">
