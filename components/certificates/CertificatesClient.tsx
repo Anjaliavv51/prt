@@ -15,6 +15,7 @@ import {
   FaBuildingColumns,
   FaIdCard,
   FaLayerGroup,
+  FaLock,
 } from "react-icons/fa6";
 
 interface CertificatesClientProps {
@@ -91,14 +92,14 @@ export default function CertificatesClient({
         </Link>
 
         <div className="flex items-center gap-3">
-          <a
-            href="https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-purple/30 bg-purple/10 text-xs font-semibold text-purple hover:bg-purple/20 transition-all shadow-[0_0_12px_rgba(203,172,249,0.2)]"
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.04] text-xs text-neutral-400 hover:text-white hover:bg-white/[0.08] transition-all"
+            title="Admin Login & Management"
           >
-            <span>View Resume / CV</span>
-          </a>
+            <FaLock className="text-[10px]" />
+            <span>Admin Portal</span>
+          </Link>
         </div>
       </header>
 

@@ -91,13 +91,11 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
             Copyright © {new Date().getFullYear()} Pavananjali
           </p>
           <a
-            href="https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-purple/80 hover:text-purple hover:underline transition-colors ml-1 font-medium"
-            title="View Resume / CV"
+            href="/admin"
+            className="text-xs text-neutral-400 hover:text-purple transition-colors ml-1 font-medium"
+            title="Admin Login"
           >
-            • View Resume / CV
+            • Admin
           </a>
         </div>
 
