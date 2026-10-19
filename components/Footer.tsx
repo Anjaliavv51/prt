@@ -107,25 +107,12 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
             }
 
             const itemLabel = ("name" in info && info.name) ? info.name : "Social profile";
-            const isInstagram = itemLabel.toLowerCase().includes("instagram") || href.includes("instagram.com");
 
             return (
               <div
                 key={info.id}
-                className={`relative group/soc w-10 h-10 cursor-pointer flex justify-center items-center backdrop-filter backdrop-blur-lg saturate-180 bg-opacity-75 bg-black-200 rounded-lg border border-black-300 transition-all hover:scale-110 ${
-                  isInstagram ? "hover:border-pink-500/60 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]" : ""
-                }`}
+                className="w-10 h-10 cursor-pointer flex justify-center items-center backdrop-filter backdrop-blur-lg saturate-180 bg-opacity-75 bg-black-200 rounded-lg border border-black-300 transition-all hover:scale-110"
               >
-                {isInstagram && (
-                  <div className="absolute -top-11 right-0 md:left-1/2 md:-translate-x-1/2 opacity-0 group-hover/soc:opacity-100 group-hover/soc:-translate-y-1 pointer-events-none transition-all duration-300 ease-out z-30 whitespace-nowrap">
-                    <div className="px-3 py-1 rounded-lg bg-[#190a28]/95 border border-pink-500/50 shadow-[0_0_20px_rgba(236,72,153,0.4)] backdrop-blur-md flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-ping" />
-                      <span className="text-[11px] font-semibold bg-gradient-to-r from-pink-300 to-amber-200 bg-clip-text text-transparent">
-                        DM on Instagram for Video Editing and Photography
-                      </span>
-                    </div>
-                  </div>
-                )}
                 <a
                   href={href}
                   target="_blank"
