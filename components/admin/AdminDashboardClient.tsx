@@ -8,6 +8,7 @@ import {
   ProjectItem,
   ExperienceItem,
   CertificateItem,
+  PhotographItem,
 } from "@/lib/portfolio-data";
 import {
   FaArrowUpRightFromSquare,
@@ -28,6 +29,7 @@ import {
   FaFilePdf,
   FaEye,
   FaDownload,
+  FaCamera,
 } from "react-icons/fa6";
 
 interface AdminDashboardClientProps {
@@ -43,7 +45,13 @@ export default function AdminDashboardClient({
   const [saving, setSaving] = useState(false);
   const [content, setContent] = useState<PortfolioContent>(initialContent);
   const [activeTab, setActiveTab] = useState<
-    "profile" | "projects" | "experience" | "certificates" | "social" | "bento"
+    | "profile"
+    | "projects"
+    | "experience"
+    | "certificates"
+    | "photography"
+    | "social"
+    | "bento"
   >("profile");
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
@@ -51,7 +59,7 @@ export default function AdminDashboardClient({
   } | null>(null);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
 
-  // Modal states for Projects, Experience & Certificates
+  // Modal states for Projects, Experience, Certificates & Photography
   const [editingProject, setEditingProject] = useState<ProjectItem | null>(null);
   const [isNewProject, setIsNewProject] = useState(false);
   const [editingExperience, setEditingExperience] =
@@ -60,6 +68,9 @@ export default function AdminDashboardClient({
   const [editingCertificate, setEditingCertificate] =
     useState<CertificateItem | null>(null);
   const [isNewCertificate, setIsNewCertificate] = useState(false);
+  const [editingPhotograph, setEditingPhotograph] =
+    useState<PhotographItem | null>(null);
+  const [isNewPhotograph, setIsNewPhotograph] = useState(false);
 
   // File input ref for generic uploads
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -69,7 +80,8 @@ export default function AdminDashboardClient({
       | "project"
       | "experience"
       | "certificate-image"
-      | "certificate-pdf";
+      | "certificate-pdf"
+      | "photography-image";
     id?: number | string;
   } | null>(null);
 
@@ -167,6 +179,11 @@ export default function AdminDashboardClient({
         editingCertificate
       ) {
         setEditingCertificate({ ...editingCertificate, pdfUrl: uploadedUrl });
+      } else if (
+        uploadTarget.type === "photography-image" &&
+        editingPhotograph
+      ) {
+        setEditingPhotograph({ ...editingPhotograph, image: uploadedUrl });
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Upload failed";
@@ -184,7 +201,8 @@ export default function AdminDashboardClient({
       | "project"
       | "experience"
       | "certificate-image"
-      | "certificate-pdf",
+      | "certificate-pdf"
+      | "photography-image",
     id?: number | string
   ) {
     setUploadTarget({ type, id });
@@ -379,6 +397,27 @@ export default function AdminDashboardClient({
                 }`}
               >
                 {(content.certificates || []).length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("photography")}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all cursor-pointer ${
+                activeTab === "photography"
+                  ? "bg-purple text-black shadow-[0_0_15px_rgba(203,172,249,0.3)] font-semibold"
+                  : "text-white-100 hover:text-white hover:bg-white/[0.05]"
+              }`}
+            >
+              <FaCamera className="text-base" />
+              <span>Photography</span>
+              <span
+                className={`ml-auto text-xs px-2 py-0.5 rounded-full ${
+                  activeTab === "photography"
+                    ? "bg-black/20 text-black"
+                    : "bg-white/[0.1] text-white-100"
+                }`}
+              >
+                {(content.photography || []).length}
               </span>
             </button>
 
@@ -907,6 +946,147 @@ export default function AdminDashboardClient({
                           }}
                           className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
                           title="Delete Certificate"
+                        >
+                          <FaTrashCan className="text-xs" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3.7: Photography Showcase */}
+          {activeTab === "photography" && (
+            <div className="space-y-6">
+              <div className="p-6 rounded-2xl bg-black-200 border border-white/[0.1] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-bold text-white mb-1">
+                    Photography Showcase
+                  </h2>
+                  <p className="text-xs text-white-100">
+                    Upload and manage your photography captures, award recognitions (2nd Place in Structures & Macro), categories, and descriptions.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/photography"
+                    target="_blank"
+                    className="px-3 py-2 rounded-xl border border-white/[0.15] bg-black-100 text-white-100 text-xs font-semibold hover:text-white hover:border-purple transition-all flex items-center gap-1.5"
+                  >
+                    <FaArrowUpRightFromSquare className="text-[10px]" />
+                    <span>View Public Page</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setEditingPhotograph({
+                        id: Date.now(),
+                        title: "",
+                        category: "Structures",
+                        image: "/certificates/drsya-photography-excellence.png",
+                        award: "",
+                        caption: "",
+                        location: "",
+                        featured: false,
+                      });
+                      setIsNewPhotograph(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-purple text-black text-xs font-semibold hover:bg-purple/90 transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(203,172,249,0.3)] cursor-pointer"
+                  >
+                    <FaPlus />
+                    <span>Add Photograph</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Photographs Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {(content.photography || []).map((photo) => (
+                  <div
+                    key={photo.id}
+                    className="p-5 rounded-2xl bg-black-200 border border-white/[0.1] flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="relative w-full h-44 rounded-xl overflow-hidden bg-black-100 mb-4 border border-white/[0.08] group">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={photo.image}
+                          alt={photo.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute top-2.5 left-2.5">
+                          <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-purple border border-purple/30">
+                            {photo.category}
+                          </span>
+                        </div>
+                        {photo.award && (
+                          <div className="absolute top-2.5 right-2.5 max-w-[65%]">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 truncate block">
+                              {photo.award}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      <h3 className="text-base font-bold text-white line-clamp-1 mb-1">
+                        {photo.title}
+                      </h3>
+
+                      {photo.caption && (
+                        <p className="text-xs text-white-100 line-clamp-2 mb-3">
+                          {photo.caption}
+                        </p>
+                      )}
+
+                      {photo.location && (
+                        <div className="text-[11px] text-white-200 mb-3 flex items-center gap-1">
+                          <span>📍 {photo.location}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between">
+                      <a
+                        href={photo.image}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs text-purple hover:underline flex items-center gap-1 font-medium"
+                      >
+                        <FaEye className="text-xs" />
+                        <span>Preview</span>
+                      </a>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            setEditingPhotograph(photo);
+                            setIsNewPhotograph(false);
+                          }}
+                          className="p-1.5 rounded-lg text-white-100 hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer"
+                          title="Edit Photograph"
+                        >
+                          <FaPenToSquare className="text-xs" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (
+                              confirm(
+                                `Are you sure you want to remove "${photo.title}"?`
+                              )
+                            ) {
+                              const updated = {
+                                ...content,
+                                photography: (content.photography || []).filter(
+                                  (p) => p.id !== photo.id
+                                ),
+                              };
+                              setContent(updated);
+                              handleSave(updated);
+                            }
+                          }}
+                          className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                          title="Delete Photograph"
                         >
                           <FaTrashCan className="text-xs" />
                         </button>
@@ -1496,6 +1676,195 @@ export default function AdminDashboardClient({
                 className="px-5 py-2 rounded-lg bg-purple text-black text-xs font-bold hover:bg-purple/90 cursor-pointer"
               >
                 Save Certificate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit / Add Photograph Modal */}
+      {editingPhotograph && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-lg rounded-2xl bg-black-200 border border-white/[0.15] p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-bold text-white">
+              {isNewPhotograph ? "Add New Photograph" : "Edit Photograph"}
+            </h3>
+
+            <div>
+              <label className="block text-xs font-semibold text-white-100 uppercase mb-1">
+                Photograph Title *
+              </label>
+              <input
+                type="text"
+                value={editingPhotograph.title}
+                onChange={(e) =>
+                  setEditingPhotograph({
+                    ...editingPhotograph,
+                    title: e.target.value,
+                  })
+                }
+                placeholder="e.g. Structural Rhythms or Macro Water Droplet"
+                className="w-full px-3.5 py-2 rounded-lg bg-black-100 border border-white/[0.1] text-white text-sm"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-semibold text-white-100 uppercase mb-1">
+                  Category
+                </label>
+                <select
+                  value={editingPhotograph.category}
+                  onChange={(e) =>
+                    setEditingPhotograph({
+                      ...editingPhotograph,
+                      category: e.target.value,
+                    })
+                  }
+                  className="w-full px-3.5 py-2 rounded-lg bg-black-100 border border-white/[0.1] text-white text-sm focus:outline-none"
+                >
+                  <option value="Structures">Structures</option>
+                  <option value="Macro">Macro</option>
+                  <option value="Nature">Nature</option>
+                  <option value="Creative">Creative</option>
+                  <option value="Portraits">Portraits</option>
+                  <option value="General">General</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-white-100 uppercase mb-1">
+                  Award Badge (Optional)
+                </label>
+                <input
+                  type="text"
+                  value={editingPhotograph.award || ""}
+                  onChange={(e) =>
+                    setEditingPhotograph({
+                      ...editingPhotograph,
+                      award: e.target.value,
+                    })
+                  }
+                  placeholder="e.g. 🥈 2nd Place — Structures"
+                  className="w-full px-3.5 py-2 rounded-lg bg-black-100 border border-white/[0.1] text-white text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-white-100 uppercase mb-1">
+                Location / Gear (Optional)
+              </label>
+              <input
+                type="text"
+                value={editingPhotograph.location || ""}
+                onChange={(e) =>
+                  setEditingPhotograph({
+                    ...editingPhotograph,
+                    location: e.target.value,
+                  })
+                }
+                placeholder="e.g. Amrita Vishwa Vidyapeetham or 50mm f/1.8"
+                className="w-full px-3.5 py-2 rounded-lg bg-black-100 border border-white/[0.1] text-white text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-white-100 uppercase mb-1">
+                Caption / Description
+              </label>
+              <textarea
+                rows={3}
+                value={editingPhotograph.caption || ""}
+                onChange={(e) =>
+                  setEditingPhotograph({
+                    ...editingPhotograph,
+                    caption: e.target.value,
+                  })
+                }
+                placeholder="Details of the photograph, perspective, or artistic intention..."
+                className="w-full px-3.5 py-2 rounded-lg bg-black-100 border border-white/[0.1] text-white text-sm resize-none"
+              />
+            </div>
+
+            {/* Photo Image URL & Upload */}
+            <div>
+              <label className="block text-xs font-semibold text-white-100 uppercase mb-1">
+                Photo Image URL *
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={editingPhotograph.image}
+                  onChange={(e) =>
+                    setEditingPhotograph({
+                      ...editingPhotograph,
+                      image: e.target.value,
+                    })
+                  }
+                  placeholder="/uploads/... or image URL"
+                  className="flex-1 px-3.5 py-2 rounded-lg bg-black-100 border border-white/[0.1] text-white text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    triggerUpload("photography-image", editingPhotograph.id)
+                  }
+                  className="px-3 py-2 bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shrink-0"
+                >
+                  <FaUpload />
+                  <span>Upload Image</span>
+                </button>
+              </div>
+
+              {editingPhotograph.image && (
+                <div className="mt-3 relative w-full h-36 rounded-lg overflow-hidden border border-white/[0.1] bg-black">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={editingPhotograph.image}
+                    alt="Preview"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="pt-4 border-t border-white/[0.1] flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setEditingPhotograph(null)}
+                className="px-4 py-2 rounded-lg text-white-100 hover:text-white text-xs font-medium cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!editingPhotograph.title.trim()) {
+                    alert("Please provide a photograph title");
+                    return;
+                  }
+                  if (!editingPhotograph.image.trim()) {
+                    alert("Please upload or provide an image URL");
+                    return;
+                  }
+                  let updatedList: PhotographItem[];
+                  const existingList = content.photography || [];
+                  if (isNewPhotograph) {
+                    updatedList = [editingPhotograph, ...existingList];
+                  } else {
+                    updatedList = existingList.map((p) =>
+                      p.id === editingPhotograph.id ? editingPhotograph : p
+                    );
+                  }
+                  const updated = { ...content, photography: updatedList };
+                  setContent(updated);
+                  setEditingPhotograph(null);
+                  handleSave(updated);
+                }}
+                className="px-5 py-2 rounded-lg bg-purple text-black text-xs font-bold hover:bg-purple/90 cursor-pointer"
+              >
+                Save Photograph
               </button>
             </div>
           </div>

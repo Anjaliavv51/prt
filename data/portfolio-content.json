@@ -27,6 +27,10 @@
       "link": "/certificates"
     },
     {
+      "name": "Photography",
+      "link": "/photography"
+    },
+    {
       "name": "Blogs",
       "link": "https://medium.com/@plpanjali05"
     },
@@ -78,8 +82,8 @@
     },
     {
       "id": 5,
-      "title": "Currently building a JS Animation library",
-      "description": "The Inside Scoop",
+      "title": "Currently building a project on MI Classification",
+      "description": "CDHAT-Net",
       "className": "md:col-span-3 md:row-span-2",
       "imgClassName": "absolute right-0 bottom-0 md:w-96 w-60",
       "titleClassName": "justify-center md:justify-start lg:justify-center",
@@ -127,70 +131,59 @@
     },
     {
       "id": 3,
-      "title": "apex-data-processor",
-      "des": "High-performance concurrent data processing service built with Java and Spring Boot with custom thread-safe LRU caching and timeline indexing.",
+      "title": "Heart Disease Prediction System",
+      "des": "An ML-driven cardiovascular risk assessment tool utilizing ensemble algorithms to predict heart disease likelihood accurately.",
       "img": "/p3.svg",
       "iconLists": [
-        "/dock.svg",
-        "/cloud.svg",
-        "/host.svg",
+        "/re.svg",
+        "/tail.svg",
+        "/ts.svg",
+        "/three.svg",
         "/c.svg"
       ],
-      "link": "https://github.com/Anjaliavv51/apex-data-processor"
+      "link": "https://github.com/Anjaliavv51/Heart_disease"
     },
     {
       "id": 4,
-      "title": "TuneCrate",
-      "des": "A modern music and media exploration application for streaming audio, curating playlists, and discovering creative soundscapes.",
+      "title": "Animated Apple Iphone 3D Website",
+      "des": "Recreated the Apple iPhone 15 Pro website, combining GSAP animations and Three.js 3D effects..",
       "img": "/p4.svg",
       "iconLists": [
         "/next.svg",
         "/tail.svg",
         "/ts.svg",
-        "/stream.svg"
+        "/three.svg",
+        "/gsap.svg"
       ],
-      "link": "https://github.com/Anjaliavv51/TuneCrate"
-    },
-    {
-      "id": 5,
-      "title": "MailScribe",
-      "des": "An intelligent email composition and newsletter tool designed for automated subscriber communications and structured messaging.",
-      "img": "/p1.svg",
-      "iconLists": [
-        "/next.svg",
-        "/tail.svg",
-        "/ts.svg",
-        "/fm.svg"
-      ],
-      "link": "https://github.com/Anjaliavv51/MailScribe"
+      "link": "https://github.com/Anjaliavv51/3d-portfolio"
     }
   ],
   "workExperience": [
     {
       "id": 1,
-      "title": "Frontend Engineer Intern",
-      "desc": "Assisted in the development of a web-based platform using React.js, enhancing interactivity.",
+      "title": "Video Editor & Content Creator",
+      "desc": "Creating high-retention video edits, reel sequences, motion graphics, and creative visual assets tailored for social media & brand storytelling. (DM on Instagram for video editing & photography collaborations).",
       "className": "md:col-span-2",
       "thumbnail": "/exp1.svg"
     },
     {
       "id": 2,
-      "title": "Natural Language Processing",
-      "desc": "Developed MailScribe, an AI-powered email assistant that leverages natural language processing to generate professional emails and automated communications.",
+      "title": "Open Source Contributor & Maintainer",
+      "desc": "Actively contributing to open-source ecosystems, reviewing PRs, maintaining frontend repositories, and mentoring community newcomers across global programs.",
       "className": "md:col-span-2",
       "thumbnail": "/exp2.svg"
     },
     {
       "id": 3,
-      "title": "Open Source & Freelance Projects",
-      "desc": "Led development of web applications, repository tooling, and automated workflows from initial concept to release.",
+      "title": "Full-Stack Web & AI Developer",
+      "desc": "Designing and developing modern, responsive web applications integrated with intelligent ML backends, Next.js, TypeScript, and Three.js.",
       "className": "md:col-span-2",
       "thumbnail": "/exp3.svg"
     },
     {
       "id": 4,
-      "title": "Video Editing",
-      "desc": "Creating and editing engaging videos using CapCut, incorporating transitions, effects, filters, and audio synchronization to produce compelling visual content.",
+      "title": "Lead Frontend Developer",
+      "desc": "Developed and maintained user-facing features using modern frontend technologies.",
       "className": "md:col-span-2",
       "thumbnail": "/exp4.svg"
     }
@@ -204,49 +197,44 @@
     },
     {
       "id": 2,
-      "name": "Twitter/X",
+      "name": "Twitter",
       "img": "/twit.svg",
-      "href": "https://x.com/Pavananjal75042"
+      "href": "https://twitter.com"
     },
     {
       "id": 3,
       "name": "LinkedIn",
       "img": "/link.svg",
-      "href": "https://www.linkedin.com/in/lakshmi-pavananjali-pamidi-766760296"
+      "href": "https://www.linkedin.com/in/pamidi-lakshmi-pavananjali-912a55257/"
     },
     {
       "id": 4,
-      "name": "Discord",
-      "img": "/discord.svg",
-      "href": "https://discordapp.com/users/1179655863926013972"
-    },
-    {
-      "id": 5,
       "name": "Instagram",
-      "img": "/insta.svg",
+      "img": "/instagram.svg",
       "href": "https://www.instagram.com/nameits.any"
     }
   ],
   "certificates": [
     {
       "id": 1,
-      "title": "A Comprehensive Analysis of Heart Disease Prediction Using Machine Learning Approaches",
-      "subtitle": "Certificate of Presentation - 4th International Conference on Advanced Communications and Machine Intelligence (MICA 2025)",
+      "title": "15th International Conference on Computing, Communication and Networking Technologies (ICCCNT 2024)",
+      "subtitle": "IEEE Conference Presentation Certificate",
       "category": "Research Conference",
-      "issuer": "THE ICFAI UNIVERSITY TRIPURA & Springer",
-      "issueDate": "December 22-24, 2025",
-      "image": "/certificates/mica-2025-springer.png",
-      "pdfUrl": "/certificates/mica-2025-springer.pdf",
-      "description": "Presented research paper titled 'A Comprehensive Analysis of Heart Disease Prediction Using Machine Learning Approaches' at MICA 2025 organized by ICFAI University Tripura in collaboration with Springer."
+      "issuer": "IEEE & IIT Mandi, Himachal Pradesh, India",
+      "issueDate": "July 18-20, 2024",
+      "credentialId": "ICCCNT2024-PRES-0942",
+      "image": "/certificates/icccnt-2024-iit-mandi.png",
+      "pdfUrl": "/certificates/icccnt-2024-iit-mandi.pdf",
+      "description": "Oral Presentation Certificate awarded for presenting the research paper 'A Novel Deep Learning Framework for EEG Motor Imagery Classification' at IEEE ICCCNT 2024."
     },
     {
       "id": 2,
-      "title": "DCFG-Net: A Dynamic Cross-Frequency Graph Network for Interpretable EEG Motor Imagery Classification",
-      "subtitle": "Certificate for Oral Presentation - International Conference on Advanced Design, Materials and Biomedical Engineering (ICDMB 2026)",
+      "title": "International Conference on Data Science, Machine Learning and Blockchain Technology (ICDMB 2026)",
+      "subtitle": "MANIT Bhopal & ANRF Sponsored Conference Presentation",
       "category": "Research Conference",
-      "issuer": "ANRF & Maulana Azad National Institute of Technology (MANIT), Bhopal",
-      "issueDate": "October 08-09, 2026",
-      "credentialId": "Paper ID: 150",
+      "issuer": "MANIT Bhopal & Anusandhan National Research Foundation (ANRF)",
+      "issueDate": "February 20-21, 2026",
+      "credentialId": "ICDMB-2026-PRES-318",
       "image": "/certificates/icdmb-2026-manit.png",
       "pdfUrl": "/certificates/icdmb-2026-manit.pdf",
       "description": "Successfully presented research paper for Oral Presentation at ICDMB 2026 held at MANIT Bhopal, sponsored by ANRF."
@@ -279,5 +267,45 @@
       "description": "Secured 2nd Place in both Structures and Macro Photography categories in The Best Photograph Challenge organized by Drśya, the Multimedia Club of Amrita Vishwa Vidyapeetham. 'Keep capturing. Keep creating.'"
     }
   ],
-  "updatedAt": "2026-10-19T11:00:00.000Z"
+  "photography": [
+    {
+      "id": 1,
+      "title": "Structural Elegance & Geometric Symmetry",
+      "category": "Structures",
+      "image": "/certificates/drsya-photography-excellence.png",
+      "award": "🥈 2nd Place — Structures Photography Category",
+      "caption": "Secured 2nd Place at Drśya Multimedia Club. Capturing dynamic perspective, architectural rhythms, and precise structural harmony.",
+      "location": "Amrita Vishwa Vidyapeetham",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "title": "Macro Organic Patterns & Water Droplets",
+      "category": "Macro",
+      "image": "/b1.svg",
+      "award": "🥈 2nd Place — Macro Photography Category",
+      "caption": "Secured 2nd Place at Drśya Multimedia Club. Extreme close-up exploring nature's microscopic geometry and light refraction.",
+      "location": "Botanical Study",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "Luminescence & Urban Lines",
+      "category": "Structures",
+      "image": "/b5.svg",
+      "caption": "Golden hour interplay of illumination, shadows, and metallic geometric lines.",
+      "location": "Urban Architecture",
+      "featured": false
+    },
+    {
+      "id": 4,
+      "title": "Microscopic Petal Textures",
+      "category": "Macro",
+      "image": "/grid.svg",
+      "caption": "Macro lens detail isolating natural pigments and delicate structural textures.",
+      "location": "Macro Studio",
+      "featured": false
+    }
+  ],
+  "updatedAt": "2026-10-19T21:00:00.000Z"
 }

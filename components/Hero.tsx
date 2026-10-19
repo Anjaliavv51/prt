@@ -8,6 +8,7 @@ import MagicButton from "./MagicButton";
 import {
   FaLocationArrow,
   FaAward,
+  FaCamera,
   FaComments,
   FaBrain,
   FaInstagram,
@@ -184,7 +185,7 @@ const Hero = ({ data }: HeroProps) => {
             </div>
 
             {/* Existing Primary CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-1">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-1 flex-wrap">
               <a href="#about">
                 <MagicButton
                   title={ctaText}
@@ -198,6 +199,14 @@ const Hero = ({ data }: HeroProps) => {
                   icon={<FaAward className="text-yellow-400 text-lg" />}
                   position={"left"}
                   otherClasses="!bg-[#0c0f24] hover:!bg-[#151c42] border border-purple/30"
+                />
+              </a>
+              <a href="/photography">
+                <MagicButton
+                  title="Photography"
+                  icon={<FaCamera className="text-pink-400 text-lg" />}
+                  position={"left"}
+                  otherClasses="!bg-[#0c0f24] hover:!bg-[#151c42] border border-pink-500/30"
                 />
               </a>
             </div>
