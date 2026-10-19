@@ -371,7 +371,7 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
     },
   ],
   photography: DEFAULT_PHOTOGRAPHY,
-  updatedAt: new Date().toISOString(),
+  updatedAt: "2026-10-19T22:00:00.000Z",
 };
 
 /**

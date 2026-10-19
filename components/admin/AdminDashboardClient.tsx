@@ -71,6 +71,14 @@ export default function AdminDashboardClient({
     text: string;
   } | null>(null);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | number | null>(null);
+
+  useEffect(() => {
+    if (deleteConfirmId !== null) {
+      const timer = setTimeout(() => setDeleteConfirmId(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [deleteConfirmId]);
 
   // Modal states for Projects, Experience, Certificates & Photography
   const [editingProject, setEditingProject] = useState<ProjectItem | null>(null);
@@ -155,16 +163,73 @@ export default function AdminDashboardClient({
     }
   }
 
+  // Compress large raster images on client before uploading to prevent serverless payload limits & quota overflow
+  async function compressImageIfNeeded(file: File): Promise<File> {
+    if (!file.type.startsWith("image/") || file.type === "image/svg+xml") {
+      return file;
+    }
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const MAX_DIM = 1600;
+          let width = img.width;
+          let height = img.height;
+          if (width > MAX_DIM || height > MAX_DIM) {
+            if (width > height) {
+              height = Math.round((height * MAX_DIM) / width);
+              width = MAX_DIM;
+            } else {
+              width = Math.round((width * MAX_DIM) / height);
+              height = MAX_DIM;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(file);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                resolve(file);
+                return;
+              }
+              const compressedFile = new File(
+                [blob],
+                file.name.replace(/\.[^.]+$/, ".jpg"),
+                { type: "image/jpeg", lastModified: Date.now() }
+              );
+              resolve(compressedFile);
+            },
+            "image/jpeg",
+            0.85
+          );
+        };
+        img.onerror = () => resolve(file);
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => resolve(file);
+      reader.readAsDataURL(file);
+    });
+  }
+
   // Handle Image Upload
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file || !uploadTarget || !content) return;
+    const rawFile = e.target.files?.[0];
+    if (!rawFile || !uploadTarget || !content) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
-
-    setUploadingField("active");
+    setUploadingField(uploadTarget.type);
     try {
+      const file = await compressImageIfNeeded(rawFile);
+      const formData = new FormData();
+      formData.append("file", file);
+
       const res = await fetch("/api/admin/upload", {
         method: "POST",
         body: formData,
@@ -184,25 +249,16 @@ export default function AdminDashboardClient({
         };
         setContent(updated);
         handleSave(updated);
-      } else if (uploadTarget.type === "project" && editingProject) {
-        setEditingProject({ ...editingProject, img: uploadedUrl });
-      } else if (uploadTarget.type === "experience" && editingExperience) {
-        setEditingExperience({ ...editingExperience, thumbnail: uploadedUrl });
-      } else if (
-        uploadTarget.type === "certificate-image" &&
-        editingCertificate
-      ) {
-        setEditingCertificate({ ...editingCertificate, image: uploadedUrl });
-      } else if (
-        uploadTarget.type === "certificate-pdf" &&
-        editingCertificate
-      ) {
-        setEditingCertificate({ ...editingCertificate, pdfUrl: uploadedUrl });
-      } else if (
-        uploadTarget.type === "photography-image" &&
-        editingPhotograph
-      ) {
-        setEditingPhotograph({ ...editingPhotograph, image: uploadedUrl });
+      } else if (uploadTarget.type === "project") {
+        setEditingProject((prev) => (prev ? { ...prev, img: uploadedUrl } : prev));
+      } else if (uploadTarget.type === "experience") {
+        setEditingExperience((prev) => (prev ? { ...prev, thumbnail: uploadedUrl } : prev));
+      } else if (uploadTarget.type === "certificate-image") {
+        setEditingCertificate((prev) => (prev ? { ...prev, image: uploadedUrl } : prev));
+      } else if (uploadTarget.type === "certificate-pdf") {
+        setEditingCertificate((prev) => (prev ? { ...prev, pdfUrl: uploadedUrl } : prev));
+      } else if (uploadTarget.type === "photography-image") {
+        setEditingPhotograph((prev) => (prev ? { ...prev, image: uploadedUrl } : prev));
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Upload failed";
@@ -700,28 +756,34 @@ export default function AdminDashboardClient({
                         >
                           <FaPenToSquare className="text-xs" />
                         </button>
-                        <button
-                          onClick={() => {
-                            if (
-                              confirm(
-                                `Are you sure you want to remove "${proj.title}"?`
-                              )
-                            ) {
+                        {deleteConfirmId === proj.id ? (
+                          <button
+                            onClick={() => {
                               const updated = {
                                 ...content,
                                 projects: content.projects.filter(
-                                  (p) => p.id !== proj.id
+                                  (p) => String(p.id) !== String(proj.id)
                                 ),
                               };
                               setContent(updated);
+                              setStoredPortfolioContent(updated);
+                              setDeleteConfirmId(null);
                               handleSave(updated);
-                            }
-                          }}
-                          className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
-                          title="Delete Project"
-                        >
-                          <FaTrashCan className="text-xs" />
-                        </button>
+                            }}
+                            className="px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/40 text-[10px] font-bold hover:bg-red-500/30 transition-all cursor-pointer"
+                            title="Click to confirm delete"
+                          >
+                            Confirm?
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setDeleteConfirmId(proj.id)}
+                            className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            title="Delete Project"
+                          >
+                            <FaTrashCan className="text-xs" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -794,28 +856,34 @@ export default function AdminDashboardClient({
                       >
                         <FaPenToSquare className="text-xs" />
                       </button>
-                      <button
-                        onClick={() => {
-                          if (
-                            confirm(
-                              `Are you sure you want to remove "${exp.title}"?`
-                            )
-                          ) {
+                      {deleteConfirmId === exp.id ? (
+                        <button
+                          onClick={() => {
                             const updated = {
                               ...content,
                               workExperience: content.workExperience.filter(
-                                (e) => e.id !== exp.id
+                                (e) => String(e.id) !== String(exp.id)
                               ),
                             };
                             setContent(updated);
+                            setStoredPortfolioContent(updated);
+                            setDeleteConfirmId(null);
                             handleSave(updated);
-                          }
-                        }}
-                        className="p-2 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
-                        title="Delete Experience"
-                      >
-                        <FaTrashCan className="text-xs" />
-                      </button>
+                          }}
+                          className="px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/40 text-[10px] font-bold hover:bg-red-500/30 transition-all cursor-pointer"
+                          title="Click to confirm delete"
+                        >
+                          Confirm?
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setDeleteConfirmId(exp.id)}
+                          className="p-2 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                          title="Delete Experience"
+                        >
+                          <FaTrashCan className="text-xs" />
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -946,31 +1014,34 @@ export default function AdminDashboardClient({
                         >
                           <FaPenToSquare className="text-xs" />
                         </button>
-                        <button
-                          onClick={() => {
-                            const shouldDelete =
-                              typeof window !== "undefined"
-                                ? window.confirm(
-                                    `Are you sure you want to remove "${cert.title}"?`
-                                  )
-                                : true;
-                            if (shouldDelete) {
+                        {deleteConfirmId === cert.id ? (
+                          <button
+                            onClick={() => {
                               const updated = {
                                 ...content,
                                 certificates: (content.certificates || []).filter(
-                                  (c) => c.id !== cert.id
+                                  (c) => String(c.id) !== String(cert.id)
                                 ),
                               };
                               setContent(updated);
                               setStoredPortfolioContent(updated);
+                              setDeleteConfirmId(null);
                               handleSave(updated);
-                            }
-                          }}
-                          className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
-                          title="Delete Certificate"
-                        >
-                          <FaTrashCan className="text-xs" />
-                        </button>
+                            }}
+                            className="px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/40 text-[10px] font-bold hover:bg-red-500/30 transition-all cursor-pointer"
+                            title="Click to confirm delete"
+                          >
+                            Confirm?
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setDeleteConfirmId(cert.id)}
+                            className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            title="Delete Certificate"
+                          >
+                            <FaTrashCan className="text-xs" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1090,31 +1161,34 @@ export default function AdminDashboardClient({
                         >
                           <FaPenToSquare className="text-xs" />
                         </button>
-                        <button
-                          onClick={() => {
-                            const shouldDelete =
-                              typeof window !== "undefined"
-                                ? window.confirm(
-                                    `Are you sure you want to remove "${photo.title}"?`
-                                  )
-                                : true;
-                            if (shouldDelete) {
+                        {deleteConfirmId === photo.id ? (
+                          <button
+                            onClick={() => {
                               const updated = {
                                 ...content,
                                 photography: (content.photography || []).filter(
-                                  (p) => p.id !== photo.id
+                                  (p) => String(p.id) !== String(photo.id)
                                 ),
                               };
                               setContent(updated);
                               setStoredPortfolioContent(updated);
+                              setDeleteConfirmId(null);
                               handleSave(updated);
-                            }
-                          }}
-                          className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
-                          title="Delete Photograph"
-                        >
-                          <FaTrashCan className="text-xs" />
-                        </button>
+                            }}
+                            className="px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/40 text-[10px] font-bold hover:bg-red-500/30 transition-all cursor-pointer"
+                            title="Click to confirm delete"
+                          >
+                            Confirm?
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setDeleteConfirmId(photo.id)}
+                            className="p-1.5 rounded-lg text-white-100 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                            title="Delete Photograph"
+                          >
+                            <FaTrashCan className="text-xs" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1630,10 +1704,15 @@ export default function AdminDashboardClient({
                   onClick={() =>
                     triggerUpload("certificate-image", editingCertificate.id)
                   }
-                  className="px-3 py-2 bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shrink-0"
+                  disabled={uploadingField === "certificate-image"}
+                  className="px-3 py-2 bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50"
                 >
-                  <FaUpload />
-                  <span>Upload Image</span>
+                  {uploadingField === "certificate-image" ? (
+                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <FaUpload />
+                  )}
+                  <span>{uploadingField === "certificate-image" ? "Uploading..." : "Upload Image"}</span>
                 </button>
               </div>
             </div>
@@ -1661,10 +1740,15 @@ export default function AdminDashboardClient({
                   onClick={() =>
                     triggerUpload("certificate-pdf", editingCertificate.id)
                   }
-                  className="px-3 py-2 bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shrink-0"
+                  disabled={uploadingField === "certificate-pdf"}
+                  className="px-3 py-2 bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50"
                 >
-                  <FaUpload />
-                  <span>Upload PDF</span>
+                  {uploadingField === "certificate-pdf" ? (
+                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <FaUpload />
+                  )}
+                  <span>{uploadingField === "certificate-pdf" ? "Uploading..." : "Upload PDF"}</span>
                 </button>
               </div>
             </div>
@@ -1693,9 +1777,15 @@ export default function AdminDashboardClient({
                   if (isNewCertificate) {
                     updatedList = [finalCert, ...existingList];
                   } else {
-                    updatedList = existingList.map((c) =>
-                      c.id === finalCert.id ? finalCert : c
+                    const matchIndex = existingList.findIndex(
+                      (c) => String(c.id) === String(finalCert.id)
                     );
+                    if (matchIndex >= 0) {
+                      updatedList = [...existingList];
+                      updatedList[matchIndex] = finalCert;
+                    } else {
+                      updatedList = [finalCert, ...existingList];
+                    }
                   }
                   const updated = { ...content, certificates: updatedList };
                   setContent(updated);
@@ -1840,10 +1930,60 @@ export default function AdminDashboardClient({
                   onClick={() =>
                     triggerUpload("photography-image", editingPhotograph.id)
                   }
-                  className="px-3 py-2 bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shrink-0"
+                  disabled={uploadingField === "photography-image"}
+                  className="px-3 py-2 bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50"
                 >
-                  <FaUpload />
-                  <span>Upload Image</span>
+                  {uploadingField === "photography-image" ? (
+                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <FaUpload />
+                  )}
+                  <span>
+                    {uploadingField === "photography-image"
+                      ? "Uploading..."
+                      : "Upload Image"}
+                  </span>
+                </button>
+              </div>
+
+              {/* Sample preset suggestions */}
+              <div className="flex flex-wrap items-center gap-2 mt-2">
+                <span className="text-[10px] text-white-200">Quick presets:</span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setEditingPhotograph({
+                      ...editingPhotograph,
+                      image: "/certificates/drsya-photography-excellence.png",
+                    })
+                  }
+                  className="px-2 py-0.5 rounded bg-white/[0.06] hover:bg-white/[0.12] text-[10px] text-purple transition-all"
+                >
+                  Drśya Award
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setEditingPhotograph({
+                      ...editingPhotograph,
+                      image: "/b1.svg",
+                    })
+                  }
+                  className="px-2 py-0.5 rounded bg-white/[0.06] hover:bg-white/[0.12] text-[10px] text-purple transition-all"
+                >
+                  Studio Shot
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setEditingPhotograph({
+                      ...editingPhotograph,
+                      image: "/b5.svg",
+                    })
+                  }
+                  className="px-2 py-0.5 rounded bg-white/[0.06] hover:bg-white/[0.12] text-[10px] text-purple transition-all"
+                >
+                  Luminescence
                 </button>
               </div>
 
@@ -1887,9 +2027,15 @@ export default function AdminDashboardClient({
                   if (isNewPhotograph) {
                     updatedList = [finalPhoto, ...existingList];
                   } else {
-                    updatedList = existingList.map((p) =>
-                      p.id === finalPhoto.id ? finalPhoto : p
+                    const matchIndex = existingList.findIndex(
+                      (p) => String(p.id) === String(finalPhoto.id)
                     );
+                    if (matchIndex >= 0) {
+                      updatedList = [...existingList];
+                      updatedList[matchIndex] = finalPhoto;
+                    } else {
+                      updatedList = [finalPhoto, ...existingList];
+                    }
                   }
                   const updated = { ...content, photography: updatedList };
                   setContent(updated);

@@ -22,15 +22,21 @@ export function getStoredPortfolioContent(initial: PortfolioContent): PortfolioC
     const storedDate = parsed.updatedAt ? new Date(parsed.updatedAt).getTime() : 0;
     const initialDate = initial.updatedAt ? new Date(initial.updatedAt).getTime() : 0;
 
-    // Use stored content if present and newer or matching
-    if (storedDate >= initialDate || parsed.photography || parsed.certificates) {
+    // Use stored content if newer or matching, or if client has customized data
+    if (storedDate >= initialDate || !initialDate) {
       return {
         ...initial,
         ...parsed,
         profile: { ...initial.profile, ...(parsed.profile || {}) },
-        certificates: parsed.certificates || initial.certificates,
-        photography: parsed.photography || initial.photography,
+        certificates: parsed.certificates !== undefined ? parsed.certificates : initial.certificates,
+        photography: parsed.photography !== undefined ? parsed.photography : initial.photography,
       };
+    } else {
+      // Server baseline is newer than old local storage; refresh local storage with server baseline
+      try {
+        localStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(initial));
+      } catch {}
+      return initial;
     }
   } catch (err) {
     console.warn("Could not read portfolio content from localStorage:", err);
@@ -86,8 +92,8 @@ export function useLivePortfolioContent(initial: PortfolioContent): PortfolioCon
             ...curr,
             ...parsed,
             profile: { ...curr.profile, ...(parsed.profile || {}) },
-            certificates: parsed.certificates || curr.certificates,
-            photography: parsed.photography || curr.photography,
+            certificates: parsed.certificates !== undefined ? parsed.certificates : curr.certificates,
+            photography: parsed.photography !== undefined ? parsed.photography : curr.photography,
           }));
         } catch {
           // ignore
