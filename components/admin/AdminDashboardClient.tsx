@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -10,6 +10,10 @@ import {
   CertificateItem,
   PhotographItem,
 } from "@/lib/portfolio-data";
+import {
+  getStoredPortfolioContent,
+  setStoredPortfolioContent,
+} from "@/lib/client-content-sync";
 import {
   FaArrowUpRightFromSquare,
   FaRightFromBracket,
@@ -43,7 +47,16 @@ export default function AdminDashboardClient({
 }: AdminDashboardClientProps) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
-  const [content, setContent] = useState<PortfolioContent>(initialContent);
+  const [content, setContent] = useState<PortfolioContent>(() =>
+    getStoredPortfolioContent(initialContent)
+  );
+
+  useEffect(() => {
+    const stored = getStoredPortfolioContent(initialContent);
+    if (stored) {
+      setContent(stored);
+    }
+  }, [initialContent]);
   const [activeTab, setActiveTab] = useState<
     | "profile"
     | "projects"
@@ -95,10 +108,14 @@ export default function AdminDashboardClient({
     }
   }
 
-  // Save all changes to the backend
+  // Save all changes to the backend & client storage
   async function handleSave(updatedContent?: PortfolioContent) {
     const toSave = updatedContent || content;
     if (!toSave) return;
+
+    // Immediately persist client-side so updates are reflected immediately across all tabs
+    setStoredPortfolioContent(toSave);
+    setContent(toSave);
 
     setSaving(true);
     setStatusMessage(null);
@@ -115,10 +132,12 @@ export default function AdminDashboardClient({
         throw new Error(data.error || "Save operation failed");
       }
 
-      setContent(data.content);
+      const merged = data.content ? { ...toSave, ...data.content } : toSave;
+      setContent(merged);
+      setStoredPortfolioContent(merged);
       setStatusMessage({
         type: "success",
-        text: "Portfolio updated successfully! Changes are now live on your public website.",
+        text: "Portfolio updated successfully! Changes are now live across your entire website.",
       });
 
       // Clear success notification after 5 seconds
@@ -929,11 +948,13 @@ export default function AdminDashboardClient({
                         </button>
                         <button
                           onClick={() => {
-                            if (
-                              confirm(
-                                `Are you sure you want to remove "${cert.title}"?`
-                              )
-                            ) {
+                            const shouldDelete =
+                              typeof window !== "undefined"
+                                ? window.confirm(
+                                    `Are you sure you want to remove "${cert.title}"?`
+                                  )
+                                : true;
+                            if (shouldDelete) {
                               const updated = {
                                 ...content,
                                 certificates: (content.certificates || []).filter(
@@ -941,6 +962,7 @@ export default function AdminDashboardClient({
                                 ),
                               };
                               setContent(updated);
+                              setStoredPortfolioContent(updated);
                               handleSave(updated);
                             }
                           }}
@@ -1070,11 +1092,13 @@ export default function AdminDashboardClient({
                         </button>
                         <button
                           onClick={() => {
-                            if (
-                              confirm(
-                                `Are you sure you want to remove "${photo.title}"?`
-                              )
-                            ) {
+                            const shouldDelete =
+                              typeof window !== "undefined"
+                                ? window.confirm(
+                                    `Are you sure you want to remove "${photo.title}"?`
+                                  )
+                                : true;
+                            if (shouldDelete) {
                               const updated = {
                                 ...content,
                                 photography: (content.photography || []).filter(
@@ -1082,6 +1106,7 @@ export default function AdminDashboardClient({
                                 ),
                               };
                               setContent(updated);
+                              setStoredPortfolioContent(updated);
                               handleSave(updated);
                             }
                           }}
@@ -1661,15 +1686,20 @@ export default function AdminDashboardClient({
                   }
                   let updatedList: CertificateItem[];
                   const existingList = content.certificates || [];
+                  const finalCert: CertificateItem = {
+                    ...editingCertificate,
+                    id: isNewCertificate ? Date.now() : editingCertificate.id,
+                  };
                   if (isNewCertificate) {
-                    updatedList = [editingCertificate, ...existingList];
+                    updatedList = [finalCert, ...existingList];
                   } else {
                     updatedList = existingList.map((c) =>
-                      c.id === editingCertificate.id ? editingCertificate : c
+                      c.id === finalCert.id ? finalCert : c
                     );
                   }
                   const updated = { ...content, certificates: updatedList };
                   setContent(updated);
+                  setStoredPortfolioContent(updated);
                   setEditingCertificate(null);
                   handleSave(updated);
                 }}
@@ -1850,15 +1880,20 @@ export default function AdminDashboardClient({
                   }
                   let updatedList: PhotographItem[];
                   const existingList = content.photography || [];
+                  const finalPhoto: PhotographItem = {
+                    ...editingPhotograph,
+                    id: isNewPhotograph ? Date.now() : editingPhotograph.id,
+                  };
                   if (isNewPhotograph) {
-                    updatedList = [editingPhotograph, ...existingList];
+                    updatedList = [finalPhoto, ...existingList];
                   } else {
                     updatedList = existingList.map((p) =>
-                      p.id === editingPhotograph.id ? editingPhotograph : p
+                      p.id === finalPhoto.id ? finalPhoto : p
                     );
                   }
                   const updated = { ...content, photography: updatedList };
                   setContent(updated);
+                  setStoredPortfolioContent(updated);
                   setEditingPhotograph(null);
                   handleSave(updated);
                 }}

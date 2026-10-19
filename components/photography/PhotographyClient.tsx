@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { PhotographItem, PortfolioContent } from "@/lib/portfolio-data";
+import { useLivePortfolioContent } from "@/lib/client-content-sync";
 import { Spotlight } from "@/components/ui/Spotlight";
 import {
   FaArrowLeft,
@@ -25,7 +26,8 @@ interface PhotographyClientProps {
 export default function PhotographyClient({
   initialContent,
 }: PhotographyClientProps) {
-  const photographs = initialContent.photography || [];
+  const content = useLivePortfolioContent(initialContent);
+  const photographs = content.photography || [];
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activePhoto, setActivePhoto] = useState<PhotographItem | null>(null);
 

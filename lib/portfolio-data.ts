@@ -101,7 +101,7 @@ const isServerless = Boolean(
   process.env.LAMBDA_TASK_ROOT
 );
 
-// In-memory memory cache for ultra-fast and resilient access across serverless executions
+// In-memory memory cache for fast access within same serverless process
 let inMemoryContentCache: PortfolioContent | null = null;
 
 export const DEFAULT_PHOTOGRAPHY: PhotographItem[] = [
@@ -109,28 +109,28 @@ export const DEFAULT_PHOTOGRAPHY: PhotographItem[] = [
     id: 1,
     title: "Structural Elegance & Geometric Symmetry",
     category: "Structures",
-    image: "/p1.svg",
+    image: "/certificates/drsya-photography-excellence.png",
     award: "🥈 2nd Place — Structures Photography Category",
-    caption: "Secured 2nd Place at Drśya Multimedia Club. Capturing dynamic perspective, architectural rhythms, and precise structural harmony.",
-    location: "Campus Architecture",
+    caption: "Award-winning capture celebrating architectural perspective, structural harmony, and geometric lines.",
+    location: "Amrita Vishwa Vidyapeetham",
     featured: true,
   },
   {
     id: 2,
-    title: "Macro Organic Patterns & Water Droplets",
+    title: "Macro Details & Optical Textures",
     category: "Macro",
     image: "/b1.svg",
     award: "🥈 2nd Place — Macro Photography Category",
-    caption: "Secured 2nd Place at Drśya Multimedia Club. Extreme close-up exploring nature's microscopic geometry and light refraction.",
-    location: "Botanical Garden",
+    caption: "Award-winning extreme close-up capturing organic patterns and light refraction.",
+    location: "Macro Studio",
     featured: true,
   },
   {
     id: 3,
-    title: "Luminescence & Urban Lines",
+    title: "Urban Luminescence & Symmetry",
     category: "Structures",
     image: "/b5.svg",
-    caption: "Golden hour interplay of illumination, shadows, and metallic geometric lines.",
+    caption: "Golden hour interplay of illumination, shadows, and architectural geometry.",
     location: "Urban Center",
     featured: false,
   },
@@ -139,8 +139,8 @@ export const DEFAULT_PHOTOGRAPHY: PhotographItem[] = [
     title: "Microscopic Petal Textures",
     category: "Macro",
     image: "/grid.svg",
-    caption: "Macro lens detail isolating natural pigments and delicate structural textures.",
-    location: "Studio Macro",
+    caption: "Macro focus on delicate natural pigments and organic structural textures.",
+    location: "Botanical Garden",
     featured: false,
   },
 ];
@@ -150,7 +150,7 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
     name: "PAMIDI LAKSHMI PAVANANJALI",
     role: "PAMIDI LAKSHMI PAVANANJALI",
     headline: "Transforming Concepts into Seamless User Experiences",
-    bio: "Hi, I'm Pavananjali, a Web Developer, Open Source, AIML and Robotics Enthusiast.",
+    bio: "Hi, I'm Pavananjali, a Web Developer, Open Source, AIML and Photography Enthusiast.",
     email: "plpanjali05@gmail.com",
     dpImage: "/dp.jpg",
     resumeLink: "https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing",
@@ -320,43 +320,50 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
   certificates: [
     {
       id: 1,
-      title: "2024 15th International Conference on Computing Communication and Networking Technologies (ICCCNT)",
-      subtitle: "IEEE Conference Certificate of Presentation",
+      title: "International Conference on Machine Intelligence and Connected Autonomous Systems (MICA 2025)",
+      subtitle: "Springer Conference Presentation Certificate",
       category: "Research Conference",
-      issuer: "IEEE & IIT Mandi, Himachal Pradesh, India",
-      issueDate: "July 18-20, 2024",
-      image: "/certificates/icccnt-2024-presentation.png",
-      pdfUrl: "/certificates/icccnt-2024-presentation.pdf",
-      description: "Certified that Pamidi Lakshmi Pavananjali presented the research paper titled 'A Novel Deep Learning Framework for EEG Motor Imagery Classification' at the prestigious 15th ICCCNT 2024.",
+      issuer: "Springer & MICA 2025",
+      issueDate: "February 2025",
+      credentialId: "MICA-2025-PRES-104",
+      image: "/certificates/mica-2025-springer.png",
+      pdfUrl: "/certificates/mica-2025-springer.pdf",
+      description: "Oral Presentation Certificate awarded for presenting the research paper at the International Conference on Machine Intelligence and Connected Autonomous Systems (MICA 2025).",
     },
     {
       id: 2,
-      title: "6th International Conference on Inventive Computation Technologies (ICICT 2024)",
-      subtitle: "Tribhuvan University, Nepal & Springer / IEEE",
+      title: "International Conference on Data Science, Machine Learning and Blockchain Technology (ICDMB 2026)",
+      subtitle: "MANIT Bhopal & ANRF Sponsored Conference Presentation",
       category: "Research Conference",
-      issuer: "Tribhuvan University, Nepal",
-      issueDate: "April 24-26, 2024",
-      image: "/certificates/icict-2024-presentation.png",
-      pdfUrl: "/certificates/icict-2024-presentation.pdf",
-      description: "Certificate of Presentation awarded for presenting the research paper titled 'Optimized Machine Learning Architectures for Cardiovascular Risk Stratification' at the 6th ICICT 2024.",
+      issuer: "MANIT Bhopal & Anusandhan National Research Foundation (ANRF)",
+      issueDate: "February 20-21, 2026",
+      credentialId: "ICDMB-2026-PRES-318",
+      image: "/certificates/icdmb-2026-manit.png",
+      pdfUrl: "/certificates/icdmb-2026-manit.pdf",
+      description: "Successfully presented research paper for Oral Presentation at ICDMB 2026 held at MANIT Bhopal, sponsored by ANRF.",
     },
     {
       id: 3,
-      title: "GirlScript Summer of Code (GSSoC) 2024 Contributor Certificate",
-      subtitle: "Open Source Contributor & Maintainer Recognition",
+      title: "GirlScript Summer of Code 2024 - Top Contributor & Top Performer",
+      subtitle: "Certificate of Appreciation & GSSoC'24 Top Performer Achievements",
       category: "Open Source",
       issuer: "GirlScript Foundation India",
-      issueDate: "October 2024",
-      image: "/certificates/gssoc-2024-contributor.png",
-      pdfUrl: "/certificates/gssoc-2024-contributor.pdf",
-      description: "Awarded to Pamidi Lakshmi Pavananjali in recognition of outstanding contributions, code commits, and active community engagement in GirlScript Summer of Code 2024.",
+      issueDate: "August 2024",
+      credentialId: "GSSoC2024_OST100C_6A152B3C",
+      image: "/certificates/gssoc-2024-open-source-p1.png",
+      additionalImages: [
+        "/certificates/gssoc-2024-open-source-p2.png",
+        "/certificates/gssoc-2024-open-source-p3.png",
+      ],
+      pdfUrl: "/certificates/gssoc-2024-open-source.pdf",
+      description: "Designated as Top Performer / Top Contributor at GirlScript Summer of Code 2024 with 93 Pull Requests merged, Rank 18, and 8 achievement badges across multiple open-source repositories.",
     },
     {
       id: 4,
-      title: "Drśya Multimedia Club Photography Challenge — 2nd Place",
-      subtitle: "Secured Second Place in Both Structures and Macro Categories",
-      category: "Achievement",
-      issuer: "Drśya - The Multimedia Club of Amrita Vishwa Vidyapeetham",
+      title: "The Best Photograph Challenge - Certificate of Excellence",
+      subtitle: "Secured 2nd Place in both Structures and Macro Photography Categories",
+      category: "Creative & Arts",
+      issuer: "Drśya, the Multimedia Club of Amrita Vishwa Vidyapeetham",
       issueDate: "Certificate of Excellence",
       image: "/certificates/drsya-photography-excellence.png",
       pdfUrl: "/certificates/drsya-photography-excellence.pdf",
@@ -435,7 +442,7 @@ export function getPortfolioContent(): PortfolioContent {
  * Save updated portfolio content atomically and revalidate public route
  * Gracefully handles read-only serverless environments (Vercel) without triggering EROFS
  */
-export function savePortfolioContent(newContent: Partial<PortfolioContent>): { success: boolean; error?: string } {
+export function savePortfolioContent(newContent: Partial<PortfolioContent>): { success: boolean; content?: PortfolioContent; error?: string } {
   try {
     const current = getPortfolioContent();
     const updated: PortfolioContent = {
@@ -445,7 +452,8 @@ export function savePortfolioContent(newContent: Partial<PortfolioContent>): { s
         ...current.profile,
         ...(newContent.profile || {}),
       },
-      photography: newContent.photography || current.photography || DEFAULT_PHOTOGRAPHY,
+      certificates: newContent.certificates !== undefined ? newContent.certificates : (current.certificates || DEFAULT_PORTFOLIO_CONTENT.certificates),
+      photography: newContent.photography !== undefined ? newContent.photography : (current.photography || DEFAULT_PHOTOGRAPHY),
       updatedAt: new Date().toISOString(),
     };
 
@@ -491,7 +499,7 @@ export function savePortfolioContent(newContent: Partial<PortfolioContent>): { s
       // ignore outside request context
     }
 
-    return { success: true };
+    return { success: true, content: updated };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to save portfolio content";
     console.error("Failed to save portfolio content:", err);

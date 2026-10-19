@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { CertificateItem, PortfolioContent } from "@/lib/portfolio-data";
+import { useLivePortfolioContent } from "@/lib/client-content-sync";
 import { Spotlight } from "@/components/ui/Spotlight";
 import {
   FaArrowLeft,
@@ -25,7 +26,8 @@ interface CertificatesClientProps {
 export default function CertificatesClient({
   initialContent,
 }: CertificatesClientProps) {
-  const certificates = initialContent.certificates || [];
+  const content = useLivePortfolioContent(initialContent);
+  const certificates = content.certificates || [];
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeCertificate, setActiveCertificate] =
     useState<CertificateItem | null>(null);

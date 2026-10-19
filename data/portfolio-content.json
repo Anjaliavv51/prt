@@ -217,15 +217,15 @@
   "certificates": [
     {
       "id": 1,
-      "title": "15th International Conference on Computing, Communication and Networking Technologies (ICCCNT 2024)",
-      "subtitle": "IEEE Conference Presentation Certificate",
+      "title": "International Conference on Machine Intelligence and Connected Autonomous Systems (MICA 2025)",
+      "subtitle": "Springer Conference Presentation Certificate",
       "category": "Research Conference",
-      "issuer": "IEEE & IIT Mandi, Himachal Pradesh, India",
-      "issueDate": "July 18-20, 2024",
-      "credentialId": "ICCCNT2024-PRES-0942",
-      "image": "/certificates/icccnt-2024-iit-mandi.png",
-      "pdfUrl": "/certificates/icccnt-2024-iit-mandi.pdf",
-      "description": "Oral Presentation Certificate awarded for presenting the research paper 'A Novel Deep Learning Framework for EEG Motor Imagery Classification' at IEEE ICCCNT 2024."
+      "issuer": "Springer & MICA 2025",
+      "issueDate": "February 2025",
+      "credentialId": "MICA-2025-PRES-104",
+      "image": "/certificates/mica-2025-springer.png",
+      "pdfUrl": "/certificates/mica-2025-springer.pdf",
+      "description": "Oral Presentation Certificate awarded for presenting the research paper at the International Conference on Machine Intelligence and Connected Autonomous Systems (MICA 2025)."
     },
     {
       "id": 2,
@@ -244,7 +244,7 @@
       "title": "GirlScript Summer of Code 2024 - Top Contributor & Top Performer",
       "subtitle": "Certificate of Appreciation & GSSoC'24 Top Performer Achievements",
       "category": "Open Source",
-      "issuer": "GirlScript Foundation",
+      "issuer": "GirlScript Foundation India",
       "issueDate": "August 2024",
       "credentialId": "GSSoC2024_OST100C_6A152B3C",
       "image": "/certificates/gssoc-2024-open-source-p1.png",
@@ -274,27 +274,27 @@
       "category": "Structures",
       "image": "/certificates/drsya-photography-excellence.png",
       "award": "🥈 2nd Place — Structures Photography Category",
-      "caption": "Secured 2nd Place at Drśya Multimedia Club. Capturing dynamic perspective, architectural rhythms, and precise structural harmony.",
+      "caption": "Award-winning capture celebrating architectural perspective, structural harmony, and geometric lines.",
       "location": "Amrita Vishwa Vidyapeetham",
       "featured": true
     },
     {
       "id": 2,
-      "title": "Macro Organic Patterns & Water Droplets",
+      "title": "Macro Details & Optical Textures",
       "category": "Macro",
       "image": "/b1.svg",
       "award": "🥈 2nd Place — Macro Photography Category",
-      "caption": "Secured 2nd Place at Drśya Multimedia Club. Extreme close-up exploring nature's microscopic geometry and light refraction.",
-      "location": "Botanical Study",
+      "caption": "Award-winning extreme close-up capturing organic patterns and light refraction.",
+      "location": "Macro Studio",
       "featured": true
     },
     {
       "id": 3,
-      "title": "Luminescence & Urban Lines",
+      "title": "Urban Luminescence & Symmetry",
       "category": "Structures",
       "image": "/b5.svg",
-      "caption": "Golden hour interplay of illumination, shadows, and metallic geometric lines.",
-      "location": "Urban Architecture",
+      "caption": "Golden hour interplay of illumination, shadows, and architectural geometry.",
+      "location": "Urban Center",
       "featured": false
     },
     {
@@ -302,10 +302,10 @@
       "title": "Microscopic Petal Textures",
       "category": "Macro",
       "image": "/grid.svg",
-      "caption": "Macro lens detail isolating natural pigments and delicate structural textures.",
-      "location": "Macro Studio",
+      "caption": "Macro focus on delicate natural pigments and organic structural textures.",
+      "location": "Botanical Garden",
       "featured": false
     }
   ],
-  "updatedAt": "2026-10-19T21:00:00.000Z"
+  "updatedAt": "2026-10-19T21:30:00.000Z"
 }
