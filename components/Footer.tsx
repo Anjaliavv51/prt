@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
 import { FaLocationArrow, FaInstagram } from "react-icons/fa6";
 import { socialMedia as defaultSocialMedia } from "@/data";
 import MagicButton from "./MagicButton";
@@ -63,13 +62,15 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
           <p className="md:text-base text-sm md:font-normal font-light">
             Copyright © {new Date().getFullYear()} Pavananjali
           </p>
-          <Link
-            href="/admin"
-            className="text-xs text-white-200/40 hover:text-white-200 transition-colors ml-1"
-            title="Admin Login"
+          <a
+            href="https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-purple/80 hover:text-purple hover:underline transition-colors ml-1 font-medium"
+            title="View Resume / CV"
           >
-            • Admin
-          </Link>
+            • View Resume / CV
+          </a>
         </div>
 
         <div className="flex items-center md:gap-3 gap-6">

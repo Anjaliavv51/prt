@@ -175,7 +175,7 @@ const Hero = ({ data }: HeroProps) => {
                   </span>
 
                   <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple/20 text-purple text-[10px] uppercase font-bold border border-purple/30">
-                    <FaComments className="text-[10px]" /> AI & Chat
+                    <FaComments className="text-[10px]" /> Click
                   </span>
 
                   <FaArrowRight className="text-xs text-purple group-hover:translate-x-1 transition-transform" />
@@ -297,6 +297,13 @@ const Hero = ({ data }: HeroProps) => {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {[
+                    "Attention is All You Need",
+                    "Encoder-Decoder",
+                    "GPT",
+                    "BERT",
+                    "LSTM",
+                    "RNN",
+                    "GRU",
                     "Transformer Attention Mechanisms",
                     "EEG Cross-Frequency Graph Networks",
                     "Heart Disease Machine Learning",

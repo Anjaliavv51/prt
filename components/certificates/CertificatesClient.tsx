@@ -91,12 +91,14 @@ export default function CertificatesClient({
         </Link>
 
         <div className="flex items-center gap-3">
-          <Link
-            href="/admin"
-            className="text-xs text-neutral-400 hover:text-purple transition-colors"
+          <a
+            href="https://drive.google.com/file/d/1zY5hGuvC-44b8hQJEn3KXADNNnXyZtI2/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-purple/30 bg-purple/10 text-xs font-semibold text-purple hover:bg-purple/20 transition-all shadow-[0_0_12px_rgba(203,172,249,0.2)]"
           >
-            Admin Portal
-          </Link>
+            <span>View Resume / CV</span>
+          </a>
         </div>
       </header>
 
