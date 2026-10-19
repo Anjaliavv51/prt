@@ -46,3 +46,5 @@ powershell.cmd
 *.tmp.*
 data/admin-auth.json
 
+
+.vercel
