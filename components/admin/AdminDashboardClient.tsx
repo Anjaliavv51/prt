@@ -27,6 +27,7 @@ import {
   FaAward,
   FaFilePdf,
   FaEye,
+  FaDownload,
 } from "react-icons/fa6";
 
 interface AdminDashboardClientProps {
@@ -221,6 +222,25 @@ export default function AdminDashboardClient({
         </div>
 
         <div className="flex items-center gap-3">
+          {/* Export JSON Backup Button */}
+          <button
+            onClick={() => {
+              if (!content) return;
+              const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `portfolio-content-${new Date().toISOString().slice(0, 10)}.json`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            title="Download JSON Backup"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.15] bg-black-200 text-xs font-medium text-white-100 hover:text-white hover:border-purple/50 transition-colors cursor-pointer"
+          >
+            <FaDownload className="text-[10px]" />
+            <span>Export JSON</span>
+          </button>
+
           {/* View Live Site Button */}
           <Link
             href="/"

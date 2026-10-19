@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 import { revalidatePath } from "next/cache";
 
 export interface ProfileData {
@@ -79,6 +80,7 @@ export interface PortfolioContent {
 }
 
 const DATA_FILE_PATH = path.join(process.cwd(), "data", "portfolio-content.json");
+const TMP_DATA_FILE_PATH = path.join(os.tmpdir(), "portfolio-content.json");
 
 export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
   profile: {
@@ -212,8 +214,8 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
     },
     {
       id: 2,
-      title: "Mobile App Development",
-      desc: "Designed and developed mobile app features for both iOS & Android platforms using React Native.",
+      title: "Natural Language Processing",
+      desc: "Developed MailScribe, an AI-powered email assistant that leverages natural language processing to generate professional emails and automated communications.",
       className: "md:col-span-2",
       thumbnail: "/exp2.svg",
     },
@@ -226,8 +228,8 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
     },
     {
       id: 4,
-      title: "Lead Frontend Developer",
-      desc: "Developed and maintained user-facing features using modern frontend technologies.",
+      title: "Video Editing",
+      desc: "Creating and editing engaging videos using CapCut, incorporating transitions, effects, filters, and audio synchronization to produce compelling visual content.",
       className: "md:col-span-2",
       thumbnail: "/exp4.svg",
     },
@@ -320,14 +322,32 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
 };
 
 /**
- * Read portfolio content from persistent file, initializing with defaults if missing
+ * Read portfolio content from persistent file or serverless /tmp cache, initializing with defaults if missing
  */
 export function getPortfolioContent(): PortfolioContent {
+  // 1. Try reading from TMP_DATA_FILE_PATH first (in-memory/serverless cache updated via admin dashboard)
+  try {
+    if (fs.existsSync(TMP_DATA_FILE_PATH)) {
+      const raw = fs.readFileSync(TMP_DATA_FILE_PATH, "utf-8");
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === "object") {
+        return {
+          ...DEFAULT_PORTFOLIO_CONTENT,
+          ...parsed,
+          profile: { ...DEFAULT_PORTFOLIO_CONTENT.profile, ...(parsed.profile || {}) },
+          certificates: parsed.certificates || DEFAULT_PORTFOLIO_CONTENT.certificates,
+        };
+      }
+    }
+  } catch (err) {
+    console.warn("Could not read from TMP_DATA_FILE_PATH:", err);
+  }
+
+  // 2. Try reading from primary project repository data file
   try {
     if (fs.existsSync(DATA_FILE_PATH)) {
       const raw = fs.readFileSync(DATA_FILE_PATH, "utf-8");
       const parsed = JSON.parse(raw);
-      // Merge with defaults to ensure all required fields exist
       return {
         ...DEFAULT_PORTFOLIO_CONTENT,
         ...parsed,
@@ -339,13 +359,13 @@ export function getPortfolioContent(): PortfolioContent {
     console.error("Error reading portfolio data file:", err);
   }
 
-  // Initialize data file on first run
+  // 3. Initialize data file on first run if writable
   try {
     const dir = path.dirname(DATA_FILE_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(DATA_FILE_PATH, JSON.stringify(DEFAULT_PORTFOLIO_CONTENT, null, 2), "utf-8");
-  } catch (err) {
-    console.error("Error writing initial portfolio content:", err);
+  } catch {
+    // Expected in read-only serverless environments like Vercel
   }
 
   return DEFAULT_PORTFOLIO_CONTENT;
@@ -353,6 +373,7 @@ export function getPortfolioContent(): PortfolioContent {
 
 /**
  * Save updated portfolio content atomically and revalidate public route
+ * Gracefully handles read-only serverless environments (Vercel) by persisting to /tmp
  */
 export function savePortfolioContent(newContent: Partial<PortfolioContent>): { success: boolean; error?: string } {
   try {
@@ -374,13 +395,33 @@ export function savePortfolioContent(newContent: Partial<PortfolioContent>): { s
       );
     }
 
-    const dir = path.dirname(DATA_FILE_PATH);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const jsonStr = JSON.stringify(updated, null, 2);
 
-    // Atomic write
-    const tempPath = `${DATA_FILE_PATH}.tmp.${Date.now()}`;
-    fs.writeFileSync(tempPath, JSON.stringify(updated, null, 2), "utf-8");
-    fs.renameSync(tempPath, DATA_FILE_PATH);
+    // 1. Always write to serverless TMP_DATA_FILE_PATH (always writable in AWS Lambda / Vercel Serverless)
+    try {
+      const tmpTemp = `${TMP_DATA_FILE_PATH}.tmp.${Date.now()}`;
+      fs.writeFileSync(tmpTemp, jsonStr, "utf-8");
+      fs.renameSync(tmpTemp, TMP_DATA_FILE_PATH);
+    } catch (err) {
+      console.warn("Could not write to TMP_DATA_FILE_PATH:", err);
+    }
+
+    // 2. Attempt to write to local DATA_FILE_PATH (works locally, catches EROFS gracefully on Vercel)
+    try {
+      const dir = path.dirname(DATA_FILE_PATH);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      const tempPath = `${DATA_FILE_PATH}.tmp.${Date.now()}`;
+      fs.writeFileSync(tempPath, jsonStr, "utf-8");
+      fs.renameSync(tempPath, DATA_FILE_PATH);
+    } catch (err: unknown) {
+      // Expected in serverless environments (read-only filesystem)
+      const errCode = (err as { code?: string })?.code;
+      if (errCode === "EROFS" || String(err).includes("read-only file system")) {
+        console.info("Vercel serverless read-only filesystem detected; changes saved to /tmp cache.");
+      } else {
+        console.warn("Could not write to DATA_FILE_PATH:", err);
+      }
+    }
 
     // Revalidate public portfolio cache
     try {

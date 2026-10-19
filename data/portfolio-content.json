@@ -175,8 +175,8 @@
     },
     {
       "id": 2,
-      "title": "Mobile App Development",
-      "desc": "Designed and developed mobile app features for both iOS & Android platforms using React Native.",
+      "title": "Natural Language Processing",
+      "desc": "Developed MailScribe, an AI-powered email assistant that leverages natural language processing to generate professional emails and automated communications.",
       "className": "md:col-span-2",
       "thumbnail": "/exp2.svg"
     },
@@ -189,8 +189,8 @@
     },
     {
       "id": 4,
-      "title": "Lead Frontend Developer",
-      "desc": "Developed and maintained user-facing features using modern frontend technologies.",
+      "title": "Video Editing",
+      "desc": "Creating and editing engaging videos using CapCut, incorporating transitions, effects, filters, and audio synchronization to produce compelling visual content.",
       "className": "md:col-span-2",
       "thumbnail": "/exp4.svg"
     }

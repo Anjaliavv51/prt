@@ -57,21 +57,31 @@ export async function POST(request: NextRequest) {
 
     const uniqueName = `${Date.now()}-${baseName}${extension}`;
 
-    // 5. Ensure directory exists
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-
-    const filePath = path.join(uploadsDir, uniqueName);
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    fs.writeFileSync(filePath, buffer);
+    let savedUrl = "";
+
+    // 5. Try writing to public/uploads (local dev / writable filesystem)
+    try {
+      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      const filePath = path.join(uploadsDir, uniqueName);
+      fs.writeFileSync(filePath, buffer);
+      savedUrl = `/uploads/${uniqueName}`;
+    } catch {
+      // Serverless fallback (Vercel / read-only filesystem):
+      // Return base64 Data URL for zero-disk dependency that renders anywhere
+      const mimeType = file.type || "image/png";
+      savedUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
+    }
 
     return NextResponse.json({
       success: true,
-      url: `/uploads/${uniqueName}`,
+      url: savedUrl,
       name: originalName,
       size: file.size,
     });
