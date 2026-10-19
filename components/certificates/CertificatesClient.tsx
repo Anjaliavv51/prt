@@ -8,10 +8,9 @@ import { Spotlight } from "@/components/ui/Spotlight";
 import {
   FaArrowLeft,
   FaAward,
-  FaFilePdf,
   FaMagnifyingGlassPlus,
   FaXmark,
-  FaDownload,
+  FaShieldHalved,
   FaCalendarDays,
   FaBuildingColumns,
   FaIdCard,
@@ -226,27 +225,14 @@ export default function CertificatesClient({
               </div>
 
               {/* Action Buttons */}
-              <div className="p-5 pt-0 flex items-center gap-2 border-t border-white/[0.06] mt-4 pt-4">
+              <div className="p-5 pt-0 border-t border-white/[0.06] mt-4 pt-4">
                 <button
                   onClick={() => setActiveCertificate(cert)}
-                  className="flex-1 py-2 px-3 rounded-xl bg-purple/20 hover:bg-purple/30 text-purple border border-purple/30 text-xs font-semibold flex items-center justify-center gap-2 transition-all"
+                  className="w-full py-2.5 px-4 rounded-xl bg-purple/15 hover:bg-purple text-purple hover:text-black border border-purple/30 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-[0_0_15px_rgba(203,172,249,0.1)] hover:shadow-[0_0_20px_rgba(203,172,249,0.3)]"
                 >
                   <FaMagnifyingGlassPlus />
-                  <span>Preview</span>
+                  <span>Preview Certificate</span>
                 </button>
-
-                {cert.pdfUrl && (
-                  <a
-                    href={cert.pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="py-2 px-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-neutral-200 border border-white/10 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
-                    title="Open Official PDF"
-                  >
-                    <FaFilePdf className="text-red-400" />
-                    <span>PDF</span>
-                  </a>
-                )}
               </div>
             </div>
           );
@@ -289,21 +275,14 @@ export default function CertificatesClient({
               </div>
 
               <div className="flex items-center gap-2">
-                {activeCertificate.pdfUrl && (
-                  <a
-                    href={activeCertificate.pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all"
-                  >
-                    <FaDownload />
-                    <span>Official PDF</span>
-                  </a>
-                )}
+                <span className="text-[11px] text-neutral-300 flex items-center gap-1.5 bg-white/[0.06] px-3 py-1.5 rounded-lg border border-white/10 select-none">
+                  <FaShieldHalved className="text-purple text-xs" />
+                  <span className="hidden sm:inline">Protected View</span>
+                </span>
 
                 <button
                   onClick={() => setActiveCertificate(null)}
-                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
                   aria-label="Close modal"
                 >
                   <FaXmark />
@@ -331,11 +310,17 @@ export default function CertificatesClient({
             )}
 
             {/* High-Res Certificate Viewer Canvas */}
-            <div className="flex-1 overflow-auto p-4 sm:p-6 flex items-center justify-center bg-black/80 min-h-[300px]">
+            <div
+              onContextMenu={(e) => e.preventDefault()}
+              className="flex-1 overflow-auto p-4 sm:p-6 flex items-center justify-center bg-black/80 min-h-[300px] select-none"
+            >
               <img
                 src={currentModalImages[activeImageIndex] || activeCertificate.image}
                 alt={activeCertificate.title}
-                className="max-h-[70vh] w-auto max-w-full object-contain rounded-xl shadow-2xl border border-white/10"
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
+                onDragStart={(e) => e.preventDefault()}
+                className="max-h-[70vh] w-auto max-w-full object-contain rounded-xl shadow-2xl border border-white/10 select-none"
               />
             </div>
 

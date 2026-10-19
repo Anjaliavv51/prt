@@ -236,4 +236,10 @@ export const navItems = [
     img: "/discord.svg",
     href: "https://discordapp.com/users/1179655863926013972",
   },
+  {
+    id: 5,
+    name: "Instagram",
+    img: "/insta.svg",
+    href: "https://www.instagram.com/nameits.any",
+  },
 ];

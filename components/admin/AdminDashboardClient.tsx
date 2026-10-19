@@ -1336,6 +1336,7 @@ export default function AdminDashboardClient({
                 >
                   <option value="Research Conference">Research Conference</option>
                   <option value="Open Source">Open Source</option>
+                  <option value="Creative & Arts">Creative & Arts</option>
                   <option value="Course / Specialization">
                     Course / Specialization
                   </option>

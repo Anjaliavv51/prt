@@ -257,6 +257,12 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
       img: "/discord.svg",
       href: "https://discordapp.com/users/1179655863926013972",
     },
+    {
+      "id": 5,
+      "name": "Instagram",
+      "img": "/insta.svg",
+      "href": "https://www.instagram.com/nameits.any",
+    },
   ],
   certificates: [
     {
@@ -297,6 +303,17 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
       ],
       pdfUrl: "/certificates/gssoc-2024-open-source.pdf",
       description: "Designated as Top Performer / Top Contributor at GirlScript Summer of Code 2024 with 93 Pull Requests merged, Rank 18, and 8 achievement badges across multiple open-source repositories.",
+    },
+    {
+      id: 4,
+      title: "The Best Photograph Challenge - Certificate of Excellence",
+      subtitle: "Secured 2nd Place in both Structures and Macro Photography Categories",
+      category: "Creative & Arts",
+      issuer: "Drśya, the Multimedia Club of Amrita Vishwa Vidyapeetham",
+      issueDate: "Certificate of Excellence",
+      image: "/certificates/drsya-photography-excellence.png",
+      pdfUrl: "/certificates/drsya-photography-excellence.pdf",
+      description: "Secured 2nd Place in both Structures and Macro Photography categories in The Best Photograph Challenge organized by Drśya, the Multimedia Club of Amrita Vishwa Vidyapeetham. 'Keep capturing. Keep creating.'",
     },
   ],
   updatedAt: new Date().toISOString(),
