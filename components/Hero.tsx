@@ -171,7 +171,7 @@ const Hero = ({ data }: HeroProps) => {
                   <FaBrain className="text-purple text-base sm:text-lg animate-pulse" />
 
                   <span className="bg-gradient-to-r from-purple-200 via-pink-200 to-cyan-200 bg-clip-text text-transparent font-bold">
-                    Ask anything about NLP
+                    Ask me anything about NLP
                   </span>
 
                   <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple/20 text-purple text-[10px] uppercase font-bold border border-purple/30">

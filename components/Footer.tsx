@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { FaLocationArrow, FaInstagram } from "react-icons/fa6";
+import { FaLocationArrow, FaInstagram, FaArrowRight } from "react-icons/fa6";
 import { socialMedia as defaultSocialMedia } from "@/data";
 import MagicButton from "./MagicButton";
 import { SocialMediaItem } from "@/lib/portfolio-data";
@@ -42,19 +42,47 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
               position="right"
             />
           </a>
-          <a
-            href="https://www.instagram.com/nameits.any"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <MagicButton
-              title="DM on Instagram for Video Editing and Photography"
-              icon={<FaInstagram className="text-pink-400 text-lg flex-shrink-0" />}
-              position="left"
-              buttonClasses="md:!w-auto"
-              otherClasses="!bg-[#150a24] hover:!bg-[#220d3a] border border-pink-500/30 text-white !px-6"
-            />
-          </a>
+
+          {/* Cool & Stylish Instagram Button with Animated Gradient & Hover Reveal */}
+          <div className="relative group md:mt-10">
+            {/* Stylish Floating Glassmorphism Tooltip on Hover */}
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-translate-y-2 pointer-events-none transition-all duration-300 ease-out z-30 whitespace-nowrap">
+              <div className="relative px-3.5 py-1.5 rounded-xl bg-[#190a28]/95 border border-pink-500/50 shadow-[0_0_25px_rgba(236,72,153,0.45)] backdrop-blur-md flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-pink-400 animate-ping" />
+                <span className="text-xs font-semibold bg-gradient-to-r from-pink-300 via-purple-200 to-amber-200 bg-clip-text text-transparent">
+                  DM on Instagram for Video Editing and Photography
+                </span>
+                {/* Tooltip bottom pointer */}
+                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#190a28] border-r border-b border-pink-500/50 rotate-45" />
+              </div>
+            </div>
+
+            <a
+              href="https://www.instagram.com/nameits.any"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative inline-flex h-12 overflow-hidden rounded-lg p-[1.5px] focus:outline-none transition-all duration-300 group-hover:scale-[1.02] shadow-[0_0_20px_rgba(236,72,153,0.2)] group-hover:shadow-[0_0_35px_rgba(236,72,153,0.45)]"
+            >
+              {/* Animated Instagram Multi-Color Conic Gradient Border */}
+              <span className="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#f09433_0%,#e6683c_25%,#dc2743_50%,#cc2366_75%,#bc1888_100%)] opacity-80 group-hover:opacity-100 transition-opacity" />
+
+              <span className="relative inline-flex h-full cursor-pointer items-center justify-center rounded-lg bg-gradient-to-r from-[#0d0714] via-[#160a22] to-[#0d0714] px-6 text-sm font-medium text-white backdrop-blur-3xl gap-2.5 border border-white/10 group-hover:border-pink-500/40 transition-colors">
+                <FaInstagram className="text-pink-400 text-lg shrink-0 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300" />
+                
+                {/* Dynamic Text Switching / Expanding on Hover */}
+                <span className="relative inline-flex items-center">
+                  <span className="inline-block transition-all duration-300 group-hover:hidden">
+                    DM on Instagram
+                  </span>
+                  <span className="hidden group-hover:inline-block transition-all duration-300 bg-gradient-to-r from-pink-200 via-purple-100 to-amber-200 bg-clip-text text-transparent font-semibold">
+                    DM on Instagram for Video Editing and Photography
+                  </span>
+                </span>
+
+                <FaArrowRight className="text-xs text-pink-400 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 shrink-0" />
+              </span>
+            </a>
+          </div>
         </div>
       </div>
       <div className="flex mt-16 md:flex-row flex-col justify-between items-center gap-4">
@@ -81,12 +109,25 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
             }
 
             const itemLabel = ("name" in info && info.name) ? info.name : "Social profile";
+            const isInstagram = itemLabel.toLowerCase().includes("instagram") || href.includes("instagram.com");
 
             return (
               <div
                 key={info.id}
-                className="w-10 h-10 cursor-pointer flex justify-center items-center backdrop-filter backdrop-blur-lg saturate-180 bg-opacity-75 bg-black-200 rounded-lg border border-black-300 transition-all hover:scale-110"
+                className={`relative group/soc w-10 h-10 cursor-pointer flex justify-center items-center backdrop-filter backdrop-blur-lg saturate-180 bg-opacity-75 bg-black-200 rounded-lg border border-black-300 transition-all hover:scale-110 ${
+                  isInstagram ? "hover:border-pink-500/60 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]" : ""
+                }`}
               >
+                {isInstagram && (
+                  <div className="absolute -top-11 right-0 md:left-1/2 md:-translate-x-1/2 opacity-0 group-hover/soc:opacity-100 group-hover/soc:-translate-y-1 pointer-events-none transition-all duration-300 ease-out z-30 whitespace-nowrap">
+                    <div className="px-3 py-1 rounded-lg bg-[#190a28]/95 border border-pink-500/50 shadow-[0_0_20px_rgba(236,72,153,0.4)] backdrop-blur-md flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-ping" />
+                      <span className="text-[11px] font-semibold bg-gradient-to-r from-pink-300 to-amber-200 bg-clip-text text-transparent">
+                        DM on Instagram for Video Editing and Photography
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <a
                   href={href}
                   target="_blank"
