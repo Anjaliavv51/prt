@@ -49,10 +49,11 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
             rel="noopener noreferrer"
           >
             <MagicButton
-              title="DM on Instagram"
-              icon={<FaInstagram className="text-pink-400 text-lg" />}
+              title="DM on Instagram for Video Editing and Photography"
+              icon={<FaInstagram className="text-pink-400 text-lg flex-shrink-0" />}
               position="left"
-              otherClasses="!bg-[#150a24] hover:!bg-[#220d3a] border border-pink-500/30 text-white"
+              buttonClasses="md:!w-auto"
+              otherClasses="!bg-[#150a24] hover:!bg-[#220d3a] border border-pink-500/30 text-white !px-6"
             />
           </a>
         </div>

@@ -51,10 +51,10 @@ const Hero = ({ data }: HeroProps) => {
     {
       name: "Instagram",
       handle: "@nameits.any",
-      desc: "Fastest response for quick questions & DMs",
+      desc: "DM on Instagram for Video Editing, Photography & Creative Inquiries",
       url: "https://www.instagram.com/nameits.any",
       icon: <FaInstagram className="text-xl text-pink-400" />,
-      badge: "Active",
+      badge: "DM Here",
       color: "hover:border-pink-500/50 hover:bg-pink-500/10",
     },
     {
