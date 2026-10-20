@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   PortfolioContent,
@@ -45,7 +44,6 @@ export default function AdminDashboardClient({
   initialContent,
   username,
 }: AdminDashboardClientProps) {
-  const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [content, setContent] = useState<PortfolioContent>(() =>
     getStoredPortfolioContent(initialContent)
@@ -109,10 +107,13 @@ export default function AdminDashboardClient({
   // Handle Logout
   async function handleLogout() {
     try {
-      await fetch("/api/admin/auth/logout", { method: "POST" });
-      router.replace("/admin/login");
+      await fetch("/api/admin/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.replace("/admin/login");
     } catch {
-      router.replace("/admin/login");
+      window.location.replace("/admin/login");
     }
   }
 

@@ -1,52 +1,67 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaLock, FaUser, FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa6";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [statusText, setStatusText] = useState("Authenticating...");
 
   // Check if already authenticated
   useEffect(() => {
+    let active = true;
     async function checkCurrentSession() {
       try {
-        const res = await fetch("/api/admin/auth/me");
+        const res = await fetch("/api/admin/auth/me", {
+          credentials: "include",
+        });
         if (res.ok) {
           const data = await res.json();
-          if (data.authenticated) {
-            router.replace("/admin");
+          if (data.authenticated && active) {
+            window.location.replace("/admin");
             return;
           }
         }
       } catch {
         // Not authenticated
       } finally {
-        setCheckingAuth(false);
+        if (active) setCheckingAuth(false);
       }
     }
     checkCurrentSession();
-  }, [router]);
+    return () => {
+      active = false;
+    };
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
+    setStatusText("Authenticating...");
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
 
     try {
       const res = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        credentials: "include",
+        signal: controller.signal,
+        body: JSON.stringify({
+          username: username.trim(),
+          password: password,
+        }),
       });
 
+      clearTimeout(timeoutId);
       const data = await res.json();
 
       if (!res.ok) {
@@ -55,10 +70,16 @@ export default function AdminLoginPage() {
         return;
       }
 
-      // Successful login
-      router.push("/admin");
-    } catch {
-      setError("An unexpected network error occurred. Please try again.");
+      // Successful login - hard navigation guarantees fresh cookie attach without Next.js router cache delays
+      setStatusText("Success! Opening Dashboard...");
+      window.location.replace("/admin");
+    } catch (err: unknown) {
+      clearTimeout(timeoutId);
+      if (err instanceof Error && err.name === "AbortError") {
+        setError("Authentication request timed out. Please check your network and try again.");
+      } else {
+        setError("An unexpected network error occurred. Please try again.");
+      }
       setLoading(false);
     }
   }
@@ -174,7 +195,7 @@ export default function AdminLoginPage() {
               {loading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                  <span>Authenticating...</span>
+                  <span>{statusText}</span>
                 </>
               ) : (
                 <span>Access Dashboard</span>

@@ -5,8 +5,8 @@ import { cookies } from "next/headers";
 
 const SESSION_COOKIE_NAME = "portfolio_admin_session";
 const SESSION_DURATION_MS = 8 * 60 * 60 * 1000; // 8 hours
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-const MAX_ATTEMPTS = 5;
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+const MAX_ATTEMPTS = 10;
 
 // In-memory rate limiter
 interface RateLimitEntry {
@@ -38,22 +38,26 @@ export function hashPassword(password: string): string {
 export function verifyPassword(password: string, storedHash: string): boolean {
   if (!password || !storedHash) return false;
 
-  // Support scrypt format: scrypt$salt$hash
-  if (storedHash.startsWith("scrypt$")) {
-    const parts = storedHash.split("$");
-    if (parts.length !== 3) return false;
-    const [, salt, expectedHashHex] = parts;
-    const derivedKey = crypto.scryptSync(password, salt, 64);
-    const expectedBuffer = Buffer.from(expectedHashHex, "hex");
-    if (derivedKey.length !== expectedBuffer.length) return false;
-    return crypto.timingSafeEqual(derivedKey, expectedBuffer);
-  }
+  const check = (candidate: string): boolean => {
+    // Support scrypt format: scrypt$salt$hash
+    if (storedHash.startsWith("scrypt$")) {
+      const parts = storedHash.split("$");
+      if (parts.length !== 3) return false;
+      const [, salt, expectedHashHex] = parts;
+      const derivedKey = crypto.scryptSync(candidate, salt, 64);
+      const expectedBuffer = Buffer.from(expectedHashHex, "hex");
+      if (derivedKey.length !== expectedBuffer.length) return false;
+      return crypto.timingSafeEqual(derivedKey, expectedBuffer);
+    }
 
-  // Plain-text fallback check for initial development env comparison (timing-safe)
-  const a = Buffer.from(password);
-  const b = Buffer.from(storedHash);
-  if (a.length !== b.length) return false;
-  return crypto.timingSafeEqual(a, b);
+    // Plain-text fallback check for initial development env comparison (timing-safe)
+    const a = Buffer.from(candidate);
+    const b = Buffer.from(storedHash);
+    if (a.length !== b.length) return false;
+    return crypto.timingSafeEqual(a, b);
+  };
+
+  return check(password) || (password.trim() !== password && check(password.trim()));
 }
 
 /**

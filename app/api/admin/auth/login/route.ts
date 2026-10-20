@@ -39,8 +39,9 @@ export async function POST(request: NextRequest) {
     const { username, password } = body;
     const credentials = getAdminCredentials();
 
-    // Constant-time check comparison
-    const usernameMatches = username.trim() === credentials.username;
+    // Case-insensitive trimmed username check
+    const usernameMatches =
+      username.trim().toLowerCase() === credentials.username.toLowerCase();
     const passwordMatches = verifyPassword(password, credentials.passwordHash);
 
     if (!usernameMatches || !passwordMatches) {
