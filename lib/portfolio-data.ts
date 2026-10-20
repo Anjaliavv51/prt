@@ -313,7 +313,7 @@ export const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
     {
       id: 4,
       name: "Instagram",
-      img: "/instagram.svg",
+      img: "/insta.svg",
       href: "https://www.instagram.com/nameits.any",
     },
   ],

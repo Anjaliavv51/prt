@@ -107,6 +107,8 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
             }
 
             const itemLabel = ("name" in info && info.name) ? info.name : "Social profile";
+            const isInstagram = itemLabel.toLowerCase().includes("instagram") || (info.img && info.img.includes("insta"));
+            const imgSrc = isInstagram ? "/insta.svg" : (info.img || "/git.svg");
 
             return (
               <div
@@ -120,10 +122,15 @@ const Footer = ({ email, socialMedia }: FooterProps) => {
                   aria-label={itemLabel}
                 >
                   <img
-                    src={info.img}
+                    src={imgSrc}
                     alt={itemLabel}
                     width={20}
                     height={20}
+                    onError={(e) => {
+                      if (isInstagram) {
+                        e.currentTarget.src = "/insta.svg";
+                      }
+                    }}
                   />
                 </a>
               </div>

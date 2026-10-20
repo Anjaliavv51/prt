@@ -1219,6 +1219,11 @@ export default function AdminDashboardClient({
                           src={soc.img}
                           alt={soc.name || "icon"}
                           className="w-5 h-5 object-contain"
+                          onError={(e) => {
+                            if (soc.name?.toLowerCase().includes("instagram") || soc.img?.includes("insta")) {
+                              (e.currentTarget as HTMLImageElement).src = "/insta.svg";
+                            }
+                          }}
                         />
                       </div>
                       <div className="flex-1">
