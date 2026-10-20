@@ -452,8 +452,13 @@ export function savePortfolioContent(newContent: Partial<PortfolioContent>): { s
         ...current.profile,
         ...(newContent.profile || {}),
       },
+      gridItems: newContent.gridItems !== undefined ? newContent.gridItems : (current.gridItems || DEFAULT_PORTFOLIO_CONTENT.gridItems),
+      projects: newContent.projects !== undefined ? newContent.projects : (current.projects || DEFAULT_PORTFOLIO_CONTENT.projects),
+      workExperience: newContent.workExperience !== undefined ? newContent.workExperience : (current.workExperience || DEFAULT_PORTFOLIO_CONTENT.workExperience),
       certificates: newContent.certificates !== undefined ? newContent.certificates : (current.certificates || DEFAULT_PORTFOLIO_CONTENT.certificates),
       photography: newContent.photography !== undefined ? newContent.photography : (current.photography || DEFAULT_PHOTOGRAPHY),
+      socialMedia: newContent.socialMedia !== undefined ? newContent.socialMedia : (current.socialMedia || DEFAULT_PORTFOLIO_CONTENT.socialMedia),
+      navItems: newContent.navItems !== undefined ? newContent.navItems : (current.navItems || DEFAULT_PORTFOLIO_CONTENT.navItems),
       updatedAt: new Date().toISOString(),
     };
 

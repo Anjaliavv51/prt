@@ -12,6 +12,7 @@ import {
 import {
   getStoredPortfolioContent,
   setStoredPortfolioContent,
+  mergePortfolioContent,
 } from "@/lib/client-content-sync";
 import {
   FaArrowUpRightFromSquare,
@@ -141,7 +142,7 @@ export default function AdminDashboardClient({
         throw new Error(data.error || "Save operation failed");
       }
 
-      const merged = data.content ? { ...toSave, ...data.content } : toSave;
+      const merged = mergePortfolioContent(data.content || content, toSave);
       setContent(merged);
       setStoredPortfolioContent(merged);
       setStatusMessage({

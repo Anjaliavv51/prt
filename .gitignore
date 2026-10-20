@@ -54,3 +54,4 @@ private/
 
 
 .vercel
+.env*
