@@ -224,7 +224,7 @@
       "issueDate": "February 2025",
       "credentialId": "MICA-2025-PRES-104",
       "image": "/certificates/mica-2025-springer.png",
-      "pdfUrl": "/certificates/mica-2025-springer.pdf",
+      "pdfUrl": "/api/admin/documents/mica-2025-springer.pdf",
       "description": "Oral Presentation Certificate awarded for presenting the research paper at the International Conference on Machine Intelligence and Connected Autonomous Systems (MICA 2025)."
     },
     {
@@ -236,7 +236,7 @@
       "issueDate": "February 20-21, 2026",
       "credentialId": "ICDMB-2026-PRES-318",
       "image": "/certificates/icdmb-2026-manit.png",
-      "pdfUrl": "/certificates/icdmb-2026-manit.pdf",
+      "pdfUrl": "/api/admin/documents/icdmb-2026-manit.pdf",
       "description": "Successfully presented research paper for Oral Presentation at ICDMB 2026 held at MANIT Bhopal, sponsored by ANRF."
     },
     {
@@ -252,7 +252,7 @@
         "/certificates/gssoc-2024-open-source-p2.png",
         "/certificates/gssoc-2024-open-source-p3.png"
       ],
-      "pdfUrl": "/certificates/gssoc-2024-open-source.pdf",
+      "pdfUrl": "/api/admin/documents/gssoc-2024-open-source.pdf",
       "description": "Designated as Top Performer / Top Contributor at GirlScript Summer of Code 2024 with 93 Pull Requests merged, Rank 18, and 8 achievement badges across multiple open-source repositories."
     },
     {
@@ -263,7 +263,7 @@
       "issuer": "Drśya, the Multimedia Club of Amrita Vishwa Vidyapeetham",
       "issueDate": "Certificate of Excellence",
       "image": "/certificates/drsya-photography-excellence.png",
-      "pdfUrl": "/certificates/drsya-photography-excellence.pdf",
+      "pdfUrl": "/api/admin/documents/drsya-photography-excellence.pdf",
       "description": "Secured 2nd Place in both Structures and Macro Photography categories in The Best Photograph Challenge organized by Drśya, the Multimedia Club of Amrita Vishwa Vidyapeetham. 'Keep capturing. Keep creating.'"
     }
   ],

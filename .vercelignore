@@ -1,0 +1,23 @@
+# Vercel Deployment Ignore Configuration
+# Version Control
+.git
+.github
+
+# Dependencies
+node_modules/
+
+# Next.js build cache & output
+.next/
+out/
+build/
+
+# Local secret environment files (production uses encrypted Vercel env vars)
+.env*.local
+
+# Testing & Coverage
+coverage/
+*.log*
+
+# System
+.DS_Store
+Thumbs.db

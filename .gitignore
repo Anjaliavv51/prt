@@ -46,5 +46,11 @@ powershell.cmd
 *.tmp.*
 data/admin-auth.json
 
+# Secure Document Vault & Private Documents (Admin-Only, Never in Public Git)
+vault/
+*.pdf
+private/
+*.secret
+
 
 .vercel

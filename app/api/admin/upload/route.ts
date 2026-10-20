@@ -62,21 +62,36 @@ export async function POST(request: NextRequest) {
 
     let savedUrl = "";
 
-    // 5. Try writing to public/uploads (local dev / writable filesystem)
-    try {
-      const uploadsDir = path.join(process.cwd(), "public", "uploads");
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
+    // 5. If it's a PDF document, store it inside the secure authenticated vault
+    if (file.type === "application/pdf" || extension === ".pdf") {
+      try {
+        const vaultDir = path.join(process.cwd(), "vault", "documents");
+        if (!fs.existsSync(vaultDir)) {
+          fs.mkdirSync(vaultDir, { recursive: true });
+        }
+        const filePath = path.join(vaultDir, uniqueName);
+        fs.writeFileSync(filePath, buffer);
+        savedUrl = `/api/admin/documents/${uniqueName}`;
+      } catch {
+        savedUrl = `data:application/pdf;base64,${buffer.toString("base64")}`;
       }
+    } else {
+      // 6. Try writing images to public/uploads (local dev / writable filesystem)
+      try {
+        const uploadsDir = path.join(process.cwd(), "public", "uploads");
+        if (!fs.existsSync(uploadsDir)) {
+          fs.mkdirSync(uploadsDir, { recursive: true });
+        }
 
-      const filePath = path.join(uploadsDir, uniqueName);
-      fs.writeFileSync(filePath, buffer);
-      savedUrl = `/uploads/${uniqueName}`;
-    } catch {
-      // Serverless fallback (Vercel / read-only filesystem):
-      // Return base64 Data URL for zero-disk dependency that renders anywhere
-      const mimeType = file.type || "image/png";
-      savedUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
+        const filePath = path.join(uploadsDir, uniqueName);
+        fs.writeFileSync(filePath, buffer);
+        savedUrl = `/uploads/${uniqueName}`;
+      } catch {
+        // Serverless fallback (Vercel / read-only filesystem):
+        // Return base64 Data URL for zero-disk dependency that renders anywhere
+        const mimeType = file.type || "image/png";
+        savedUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
+      }
     }
 
     return NextResponse.json({

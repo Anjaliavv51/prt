@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  outputFileTracingIncludes: {
+    "/api/admin/documents/:path*": ["./vault/documents/**/*"],
+  },
 };
 
 module.exports = nextConfig;

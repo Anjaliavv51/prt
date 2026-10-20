@@ -16,10 +16,14 @@ interface RateLimitEntry {
 const rateLimitMap = new Map<string, RateLimitEntry>();
 
 function getSecretKey(): string {
-  return (
-    process.env.SESSION_SECRET ||
-    "portfolio_default_secure_fallback_secret_key_8f3d6c7b9a1e4f2"
-  );
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("CRITICAL SECURITY ERROR: SESSION_SECRET is required in production");
+    }
+    return "dev_local_only_session_fallback_secret_key_8f3d6c7b9a1e4f2";
+  }
+  return secret;
 }
 
 /**
@@ -72,11 +76,11 @@ interface AdminAuthStore {
 }
 
 /**
- * Get configured admin credentials, initializing hash store if needed
+ * Get configured admin credentials from environment or secure local hash store
  */
 export function getAdminCredentials(): { username: string; passwordHash: string } {
   const envUsername = (process.env.ADMIN_USERNAME || "plpanjali05").trim();
-  const envPassword = process.env.ADMIN_PASSWORD || "Pavananjali@2025!";
+  const envPassword = (process.env.ADMIN_PASSWORD || "").trim();
 
   // Check if hash store exists
   if (fs.existsSync(AUTH_FILE_PATH)) {
@@ -91,6 +95,11 @@ export function getAdminCredentials(): { username: string; passwordHash: string 
     }
   }
 
+  // If no password configured in environment, return empty hash to prevent any login
+  if (!envPassword) {
+    return { username: envUsername, passwordHash: "" };
+  }
+
   // Initialize hash store from env
   const hash = hashPassword(envPassword);
   const initialStore: AdminAuthStore = {
@@ -103,8 +112,8 @@ export function getAdminCredentials(): { username: string; passwordHash: string 
     const dir = path.dirname(AUTH_FILE_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(AUTH_FILE_PATH, JSON.stringify(initialStore, null, 2), "utf-8");
-  } catch (err) {
-    console.error("Could not write admin auth store:", err);
+  } catch {
+    // In serverless / read-only production environments this is harmless
   }
 
   return { username: envUsername, passwordHash: hash };

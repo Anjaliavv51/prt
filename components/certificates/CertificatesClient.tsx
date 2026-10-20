@@ -17,6 +17,7 @@ import {
   FaIdCard,
   FaLayerGroup,
   FaLock,
+  FaFilePdf,
 } from "react-icons/fa6";
 
 interface CertificatesClientProps {
@@ -32,6 +33,17 @@ export default function CertificatesClient({
   const [activeCertificate, setActiveCertificate] =
     useState<CertificateItem | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  // Check admin session status for vault access
+  useEffect(() => {
+    fetch("/api/admin/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.authenticated) setIsAdmin(true);
+      })
+      .catch(() => setIsAdmin(false));
+  }, []);
 
   // Extract unique categories
   const categories = [
@@ -280,6 +292,29 @@ export default function CertificatesClient({
               </div>
 
               <div className="flex items-center gap-2">
+                {activeCertificate.pdfUrl && isAdmin && (
+                  <a
+                    href={activeCertificate.pdfUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[11px] text-purple hover:text-black bg-purple/20 hover:bg-purple border border-purple/40 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-all shadow-[0_0_10px_rgba(203,172,249,0.2)]"
+                    title="Open authenticated document in private vault"
+                  >
+                    <FaFilePdf className="text-xs" />
+                    <span>Vault Document</span>
+                  </a>
+                )}
+
+                {activeCertificate.pdfUrl && !isAdmin && (
+                  <span
+                    className="text-[11px] text-neutral-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 select-none"
+                    title="Original PDF document is locked inside the private administrator vault"
+                  >
+                    <FaLock className="text-[10px] text-amber-400/80" />
+                    <span className="hidden sm:inline">Vault Secured</span>
+                  </span>
+                )}
+
                 <span className="text-[11px] text-neutral-300 flex items-center gap-1.5 bg-white/[0.06] px-3 py-1.5 rounded-lg border border-white/10 select-none">
                   <FaShieldHalved className="text-purple text-xs" />
                   <span className="hidden sm:inline">Protected View</span>
