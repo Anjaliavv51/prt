@@ -73,7 +73,17 @@ export async function POST(request: NextRequest) {
         fs.writeFileSync(filePath, buffer);
         savedUrl = `/api/admin/documents/${uniqueName}`;
       } catch {
-        savedUrl = `data:application/pdf;base64,${buffer.toString("base64")}`;
+        try {
+          const tmpVaultDir = path.join("/tmp", "vault", "documents");
+          if (!fs.existsSync(tmpVaultDir)) {
+            fs.mkdirSync(tmpVaultDir, { recursive: true });
+          }
+          const tmpFilePath = path.join(tmpVaultDir, uniqueName);
+          fs.writeFileSync(tmpFilePath, buffer);
+          savedUrl = `/api/admin/documents/${uniqueName}`;
+        } catch {
+          savedUrl = `data:application/pdf;base64,${buffer.toString("base64")}`;
+        }
       }
     } else {
       // 6. Try writing images to public/uploads (local dev / writable filesystem)

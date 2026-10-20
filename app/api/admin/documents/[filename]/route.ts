@@ -31,10 +31,17 @@ export async function GET(
   }
 
   const safeFilename = path.basename(filename);
-  const vaultPath = path.join(process.cwd(), "vault", "documents", safeFilename);
+  let resolvedPath = path.join(process.cwd(), "vault", "documents", safeFilename);
+
+  if (!fs.existsSync(resolvedPath)) {
+    const tmpPath = path.join("/tmp", "vault", "documents", safeFilename);
+    if (fs.existsSync(tmpPath)) {
+      resolvedPath = tmpPath;
+    }
+  }
 
   // 3. Verify file exists in vault
-  if (!fs.existsSync(vaultPath)) {
+  if (!fs.existsSync(resolvedPath)) {
     return NextResponse.json(
       { error: "Requested document was not found in the secure vault." },
       { status: 404 }
@@ -42,7 +49,7 @@ export async function GET(
   }
 
   try {
-    const fileBuffer = fs.readFileSync(vaultPath);
+    const fileBuffer = fs.readFileSync(resolvedPath);
 
     // 4. Return document securely with strict anti-caching & anti-scraping headers
     return new NextResponse(fileBuffer, {
